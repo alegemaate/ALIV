@@ -16,7 +16,7 @@ class init : public state{
   public:
     // Construct/deconstruct
     init();
-    ~init();
+    ~init() {};
 
     // Override parent
     void update();

@@ -15,10 +15,9 @@
 #include <algif.h>
 #include <iostream>
 
-#include "globals.h"
 #include "state.h"
 #include "init.h"
-#include "game.h"
+#include "view.h"
 
 // Current state object
 state *currentState = NULL;
@@ -50,8 +49,8 @@ void change_state(){
       case STATE_INIT:
         currentState = new init();
         break;
-      case STATE_GAME :
-        currentState = new game();
+      case STATE_VIEW :
+        currentState = new view();
         break;
       default:
         currentState = new init();
@@ -93,15 +92,6 @@ void setup(){
 
 // Start here
 int main( int argc, char *argv[]){
-  // Copy over argc and argv
-  number_of_images = argc - 1;
-
-  // Iterate through argv
-  for( int i = 1; i < argc; i++){
-    image_urls.push_back( std::string(argv[i]));
-    std::cout << argv[i] << "\n";
-  }
-
   // Setup basic functionality
   setup();
 
@@ -110,13 +100,23 @@ int main( int argc, char *argv[]){
 
   //Set the current game state object
   currentState = new init();
+  set_next_state(STATE_VIEW);
+  change_state();
+
+
+  view* view_state = dynamic_cast<view*>(currentState);
+
+  // Iterate through argv
+  for( int i = 1; i < argc; i++){
+    view_state -> load_image(std::string(argv[i]));
+    std::cout << argv[i] << "\n";
+  }
+
 
   // Run loop
   while( !key[KEY_ESC] && !close_button_pressed){
     currentState -> update();
     currentState -> draw();
-
-    // Check for next state
     change_state();
   }
 

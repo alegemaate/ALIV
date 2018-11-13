@@ -1,30 +1,11 @@
-#include "game.h"
+#include "view.h"
 
 // Constrct
-game::game(){
+view::view(){
   // Loading cursor
   enable_hardware_cursor();
   select_mouse_cursor(MOUSE_CURSOR_BUSY);
   show_mouse( screen);
-
-  // Load images
-  for( int i = 0; i < number_of_images; i++){
-    // Temp bitmap
-    BITMAP *tempBitmap;
-    bool success = true;
-
-    // Test code
-    if( (tempBitmap = load_bitmap( image_urls.at(i).c_str(), NULL)) == NULL){
-      success = false;
-    }
-
-    // Success
-    if( success){
-      // Make an image data type
-      image_data tempImageData = image_data( tempBitmap);
-      images.push_back( tempImageData);
-    }
-  }
 
   // Create buffer
   buffer = create_bitmap( SCREEN_W, SCREEN_H);
@@ -34,6 +15,8 @@ game::game(){
 
   // Index
   image_index = 0;
+
+  image_num = 0;
 
   // Scroll at current scroll
   old_scroll = mouse_z;
@@ -50,8 +33,28 @@ game::game(){
   show_mouse( screen);
 }
 
+// Load image from path
+void view::load_image(std::string location) {
+  // Temp bitmap
+  BITMAP *tempBitmap;
+  bool success = true;
+
+  // Test code
+  if((tempBitmap = load_bitmap(location.c_str(), NULL)) == NULL){
+    success = false;
+  }
+
+  // Success
+  if( success){
+    // Make an image data type
+    image_data tempImageData = image_data( tempBitmap);
+    images.push_back( tempImageData);
+    image_num ++;
+  }
+}
+
 // Update
-void game::update(){
+void view::update(){
   // Check keys
   the_listener.update();
 
@@ -134,17 +137,17 @@ void game::update(){
   // Looperoni
   if( image_index < 0)
     image_index = images.size() - 1;
-  else if( image_index >= images.size())
+  else if( (unsigned)image_index >= images.size())
     image_index = 0;
 }
 
 // Draw
-void game::draw(){
+void view::draw(){
   // Clear buffer to color
   clear_to_color( buffer, 0x000000);
 
   // Draw all images stretched if needed
-  if( images.size() > image_index){
+  if( images.size() > (unsigned)image_index){
     if( images.at(image_index).wide){
       //int h_center_location = WINDOW_H/2 * image_zoom * (1 - images.at(image_index).hw_ratio);
       stretch_sprite( buffer, images.at(image_index).image,
@@ -173,9 +176,4 @@ void game::draw(){
 
   // Draw buffer to screen
   draw_sprite( screen, buffer, 0, 0);
-}
-
-// Destruct
-game::~game(){
-
 }

@@ -14,7 +14,7 @@
 class image_data{
   public:
     image_data(BITMAP *image);
-    virtual ~image_data();
+    virtual ~image_data() {};
 
     // Data we collect
     BITMAP *image;

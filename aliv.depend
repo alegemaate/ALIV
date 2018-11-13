@@ -1,0 +1,73 @@
+# depslib dependency file v1.0
+1542143862 source:c:\users\alege\documents\github\aliv\res\resources.rc
+
+1542144007 source:c:\users\alege\documents\github\aliv\src\game.cpp
+	"game.h"
+	"globals.h"
+
+1542143862 c:\users\alege\documents\github\aliv\include\game.h
+	<allegro.h>
+	<vector>
+	<math.h>
+	<iostream>
+	"image_data.h"
+	"globals.h"
+	"state.h"
+	"keyListener.h"
+
+1542144258 c:\users\alege\documents\github\aliv\include\image_data.h
+	<allegro.h>
+
+1542143862 c:\users\alege\documents\github\aliv\include\globals.h
+	<vector>
+	<string>
+
+1542144137 c:\users\alege\documents\github\aliv\include\state.h
+	<allegro.h>
+
+1542143862 c:\users\alege\documents\github\aliv\include\keylistener.h
+	<allegro.h>
+	<iostream>
+
+1542143862 source:c:\users\alege\documents\github\aliv\src\globals.cpp
+	"globals.h"
+
+1542144252 source:c:\users\alege\documents\github\aliv\src\image_data.cpp
+	"image_data.h"
+
+1542144107 source:c:\users\alege\documents\github\aliv\src\init.cpp
+	"init.h"
+
+1542144112 c:\users\alege\documents\github\aliv\include\init.h
+	<allegro.h>
+	"state.h"
+
+1542143862 source:c:\users\alege\documents\github\aliv\src\keylistener.cpp
+	"keyListener.h"
+
+1542143862 source:c:\users\alege\documents\github\aliv\src\state.cpp
+	"state.h"
+
+1542144748 source:c:\users\alege\documents\github\aliv\src\main.cpp
+	<allegro.h>
+	<alpng.h>
+	<jpgalleg.h>
+	<algif.h>
+	<iostream>
+	"state.h"
+	"init.h"
+	"view.h"
+
+1542144463 c:\users\alege\documents\github\aliv\include\view.h
+	<allegro.h>
+	<vector>
+	<math.h>
+	<iostream>
+	<string>
+	"image_data.h"
+	"state.h"
+	"keyListener.h"
+
+1542145053 source:c:\users\alege\documents\github\aliv\src\view.cpp
+	"view.h"
+

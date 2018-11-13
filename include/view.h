@@ -5,31 +5,32 @@
  * Displays the image
  */
 
-#ifndef GAME_H
-#define GAME_H
+#ifndef VIEW_H
+#define VIEW_H
 
 #include <allegro.h>
 #include <vector>
 #include <math.h>
 #include <iostream>
+#include <string>
 
 #include "image_data.h"
-#include "globals.h"
 #include "state.h"
 #include "keyListener.h"
 
 #define WINDOW_W SCREEN_W
 #define WINDOW_H SCREEN_H
 
-class game : public state{
+class view : public state{
   public:
     // Construct/deconstruct
-    game();
-    ~game();
+    view();
+    ~view() {};
 
     // Override parent
     void update();
     void draw();
+    void load_image(std::string location);
   protected:
 
   private:
@@ -38,6 +39,9 @@ class game : public state{
 
     // Image buffer
     BITMAP *buffer;
+
+    // Number of images loaded
+    int image_num;
 
     // Zoom factor
     float image_zoom;

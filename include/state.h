@@ -22,7 +22,7 @@ enum programStates{
   STATE_NULL,
   STATE_INIT,
   STATE_INTRO,
-  STATE_GAME,
+  STATE_VIEW,
   STATE_EXIT,
 };
 

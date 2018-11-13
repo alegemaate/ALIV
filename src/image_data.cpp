@@ -19,8 +19,3 @@ image_data::image_data(BITMAP *image){
   else
     wide = false;
 }
-
-// Destructor
-image_data::~image_data(){
-
-}
