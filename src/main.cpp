@@ -12,8 +12,8 @@
 // Allegro handles BMP, TIF and a few others
 #include <alpng.h>
 #include <jpgalleg.h>
-#include <algif.h>
 
+#include "algif/algif.h"
 #include "state.h"
 #include "init.h"
 #include "view.h"

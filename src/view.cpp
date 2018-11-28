@@ -2,11 +2,11 @@
 
 #include <alpng.h>
 #include <jpgalleg.h>
-#include <algif.h>
-
 #include <math.h>
-
 #include <iostream>
+
+#include "algif/algif.h"
+
 
 // Constrct
 view::view(){
@@ -42,7 +42,7 @@ view::view(){
 // Load image from path
 bool view::load_image(std::string location) {
   // Temp bitmap
-  BITMAP *tempBitmap;
+  BITMAP *tempBitmap = NULL;
 
   // Image type
   int imageType = image_type(location);
@@ -65,17 +65,16 @@ bool view::load_image(std::string location) {
            imageType == TYPE_TGA) {
     tempBitmap = load_bitmap(location.c_str(), NULL);
   }
-  // Unknown type
-  else {
+
+  // Could not load
+  if (!tempBitmap) {
+    image_data tempImageData = image_data(NULL, location);
+    images.push_back(tempImageData);
     return false;
   }
 
-  // Could not load
-  if (!tempBitmap)
-    return false;
-
   // Make an image data type
-  image_data tempImageData = image_data(tempBitmap);
+  image_data tempImageData = image_data(tempBitmap, location);
   images.push_back(tempImageData);
   return true;
 }
@@ -102,8 +101,6 @@ void view::update() {
     old_scroll = mouse_z;
   }
 
-
-
   // Move image around
   if (mouse_b & 1) {
     if (dragging) {
@@ -120,7 +117,7 @@ void view::update() {
   }
 
   // Prevent image from going off screen
-  if (image_zoom > 1.0f) {
+  if (image_zoom > 1.0f && images.size() > 0) {
     // Different corners
     if (images.at(image_index).wide) {
       // X
@@ -164,8 +161,15 @@ void view::update() {
   // Looperoni
   if (image_index < 0)
     image_index = images.size() - 1;
+
   else if ((unsigned)image_index >= images.size())
     image_index = 0;
+
+  // Set title
+  if (images.size() > 0) {
+    std::string titlePath = "ALIMG - " + images.at(image_index).filePath;
+    set_window_title(titlePath.c_str());
+  }
 }
 
 // Draw
@@ -175,7 +179,11 @@ void view::draw(){
 
   // Draw all images stretched if needed
   if (images.size() > (unsigned)image_index){
-    if (images.at(image_index).wide) {
+    // Unloadable image
+    if (images.at(image_index).image == NULL) {
+      textprintf_centre_ex( buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, "Error loading image");
+    }
+    else if (images.at(image_index).wide) {
       //int h_center_location = WINDOW_H/2 * image_zoom * (1 - images.at(image_index).hw_ratio);
       stretch_sprite(buffer, images.at(image_index).image,
                      WINDOW_W/2 * (1 - image_zoom) - x,

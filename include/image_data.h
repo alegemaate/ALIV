@@ -9,11 +9,11 @@
 #define IMAGE_DATA_H
 
 #include <allegro.h>
-
+#include <string>
 
 class image_data{
   public:
-    image_data(BITMAP *image);
+    image_data(BITMAP *image, std::string title);
     virtual ~image_data() {};
 
     // Data we collect
@@ -26,6 +26,8 @@ class image_data{
 
     float wh_ratio;
     float hw_ratio;
+
+    std::string filePath;
 
   protected:
 
