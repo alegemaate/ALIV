@@ -13,7 +13,6 @@
 #include <alpng.h>
 #include <jpgalleg.h>
 #include <algif.h>
-#include <iostream>
 
 #include "state.h"
 #include "init.h"
@@ -23,29 +22,29 @@
 state *currentState = NULL;
 
 // Delete game state and free state resources
-void clean_up(){
+void clean_up() {
   delete currentState;
 }
 
 // Close button handler (enables X button)
 volatile int close_button_pressed = FALSE;
 
-void close_button_handler(void){
+void close_button_handler(void) {
   close_button_pressed = TRUE;
 }
 END_OF_FUNCTION(close_button_handler)
 
 // Change game state
-void change_state(){
+void change_state() {
   //If the state needs to be changed
-  if( nextState != STATE_NULL ){
+  if(nextState != STATE_NULL) {
     //Delete the current state
-    if( nextState != STATE_EXIT ){
-        delete currentState;
+    if(nextState != STATE_EXIT) {
+      delete currentState;
     }
 
     //Change the state
-    switch( nextState ){
+    switch(nextState) {
       case STATE_INIT:
         currentState = new init();
         break;
@@ -66,14 +65,14 @@ void change_state(){
 }
 
 // Setup game
-void setup(){
+void setup() {
   // Load allegro library
   allegro_init();
   install_timer();
   install_keyboard();
   install_mouse();
   install_joystick(JOY_TYPE_AUTODETECT);
-  install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,".");
+  install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, ".");
   set_color_depth(32);
 
   // Addons
@@ -84,37 +83,31 @@ void setup(){
   // Close button
   LOCK_FUNCTION(close_button_handler);
   set_close_button_callback(close_button_handler);
-
-  // Game state
-  stateID = STATE_NULL;
-  nextState = STATE_NULL;
 }
 
 // Start here
-int main( int argc, char *argv[]){
+int main (int argc, char *argv[]) {
   // Setup basic functionality
   setup();
 
   //Set the current state ID
-  stateID = STATE_INIT;
-
-  //Set the current game state object
-  currentState = new init();
+  set_next_state(STATE_INIT);
+  change_state();
   set_next_state(STATE_VIEW);
   change_state();
 
-
+  // Load images into view
   view* view_state = dynamic_cast<view*>(currentState);
 
-  // Iterate through argv
-  for( int i = 1; i < argc; i++){
-    view_state -> load_image(std::string(argv[i]));
-    std::cout << argv[i] << "\n";
+  // Ensure view_state casted and load images
+  if (view_state != nullptr) {
+    for (int i = 1; i < argc; i++) {
+      view_state -> load_image(std::string(argv[i]));
+    }
   }
 
-
   // Run loop
-  while( !key[KEY_ESC] && !close_button_pressed){
+  while (!key[KEY_ESC] && !close_button_pressed) {
     currentState -> update();
     currentState -> draw();
     change_state();

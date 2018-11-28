@@ -10,8 +10,6 @@
 
 #include <allegro.h>
 #include <vector>
-#include <math.h>
-#include <iostream>
 #include <string>
 
 #include "image_data.h"
@@ -21,27 +19,44 @@
 #define WINDOW_W SCREEN_W
 #define WINDOW_H SCREEN_H
 
+enum {
+  TYPE_INV,
+  TYPE_PNG,
+  TYPE_BMP,
+  TYPE_PCX,
+  TYPE_JPG,
+  TYPE_GIF,
+  TYPE_TGA
+};
+
 class view : public state{
   public:
     // Construct/deconstruct
     view();
-    ~view() {};
+    virtual ~view() {};
 
     // Override parent
-    void update();
-    void draw();
-    void load_image(std::string location);
+    virtual void update() override;
+
+    // Draw view
+    virtual void draw() override;
+
+    // Load image from file
+    bool load_image(std::string location);
   protected:
 
   private:
+    // Gets file type
+    int image_type(std::string location);
+
+    // Converts string to lowercase
+    std::string strLower(std::string str);
+
     // Listens to keys for down and up
     keyListener the_listener;
 
     // Image buffer
     BITMAP *buffer;
-
-    // Number of images loaded
-    int image_num;
 
     // Zoom factor
     float image_zoom;

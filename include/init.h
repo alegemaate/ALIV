@@ -16,11 +16,11 @@ class init : public state{
   public:
     // Construct/deconstruct
     init();
-    ~init() {};
+    virtual ~init() {};
 
     // Override parent
-    void update();
-    void draw() {};
+    virtual void update() override;
+    virtual void draw() override {};
 
   protected:
 

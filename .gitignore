@@ -48,3 +48,4 @@ Temporary Items
 *.exe
 *.o
 *.res
+*.depend

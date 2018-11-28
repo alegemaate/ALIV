@@ -18,7 +18,7 @@ extern int nextState;
 extern void set_next_state( int newState );
 
 //Game states
-enum programStates{
+enum programStates {
   STATE_NULL,
   STATE_INIT,
   STATE_INTRO,
