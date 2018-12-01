@@ -1,7 +1,7 @@
 # aliv
 A simple Allegro 4 based image viewer.
 #### Linking
-You must link with allegro 4, allegro png, jpeg alleg and allegro gif to compile. These can be found in the following locations:
+You must link with allegro 4, allegro png, allegro gif and lib jpeg to compile. These can be found in the following locations:
 - [Allegro 4](http://liballeg.org/api.html)
 - [alpng](http://alpng.sourceforge.net/)
 - [algif](http://algif.sourceforge.net/)
