@@ -5,12 +5,12 @@ You must link with allegro 4, allegro png, jpeg alleg and allegro gif to compile
 - [Allegro 4](http://liballeg.org/api.html)
 - [alpng](http://alpng.sourceforge.net/)
 - [algif](http://algif.sourceforge.net/)
-- [jpgalleg](http://devpaks.org/details.php?devpak=70)
+- [LibJpeg](https://github.com/LuaDist/libjpeg)
 
 They should be linked in this order
 ```
 -lalpng
--ljpgal
+-ljpeg
 -lalgif
 -lalleg
 ```
