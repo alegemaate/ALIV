@@ -1,7 +1,9 @@
 #include "view.h"
 
+extern "C" {
+  #include "JpegLoader.h"
+}
 #include <alpng.h>
-#include <jpgalleg.h>
 #include <math.h>
 #include <iostream>
 
@@ -44,6 +46,9 @@ bool view::load_image(std::string location) {
   // Temp bitmap
   BITMAP *tempBitmap = NULL;
 
+  // Error message
+  std::string errorMessage = "";
+
   // Image type
   int imageType = image_type(location);
 
@@ -54,6 +59,7 @@ bool view::load_image(std::string location) {
   // Png
   else if (imageType == TYPE_JPG) {
     tempBitmap = load_jpg(location.c_str(), NULL);
+    errorMessage = lastError;
   }
   // Gif
   else if (imageType == TYPE_GIF) {
@@ -66,15 +72,8 @@ bool view::load_image(std::string location) {
     tempBitmap = load_bitmap(location.c_str(), NULL);
   }
 
-  // Could not load
-  if (!tempBitmap) {
-    image_data tempImageData = image_data(NULL, location);
-    images.push_back(tempImageData);
-    return false;
-  }
-
   // Make an image data type
-  image_data tempImageData = image_data(tempBitmap, location);
+  image_data tempImageData = image_data(tempBitmap, location, errorMessage);
   images.push_back(tempImageData);
   return true;
 }
@@ -181,7 +180,7 @@ void view::draw(){
   if (images.size() > (unsigned)image_index){
     // Unloadable image
     if (images.at(image_index).image == NULL) {
-      textprintf_centre_ex( buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, "Error loading image");
+      textprintf_centre_ex(buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, images.at(image_index).errorMessage.c_str());
     }
     else if (images.at(image_index).wide) {
       //int h_center_location = WINDOW_H/2 * image_zoom * (1 - images.at(image_index).hw_ratio);

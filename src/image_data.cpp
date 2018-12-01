@@ -1,7 +1,7 @@
 #include "image_data.h"
 
 // Constructor
-image_data::image_data(BITMAP *image, std::string title) {
+image_data::image_data(BITMAP *image, std::string title, std::string errorMessage) {
   // Image
   this -> image = image;
 
@@ -23,4 +23,12 @@ image_data::image_data(BITMAP *image, std::string title) {
 
   // Image path
   filePath = title;
+
+  // Error message
+  this -> errorMessage = "Error: " + errorMessage;
+
+  // Empty error?
+  if (errorMessage == "") {
+    errorMessage = "Error: Could not load image" + filePath;
+  }
 }

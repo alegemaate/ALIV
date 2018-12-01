@@ -13,7 +13,7 @@
 
 class image_data{
   public:
-    image_data(BITMAP *image, std::string title);
+    image_data(BITMAP *image, std::string title, std::string errorMessage);
     virtual ~image_data() {};
 
     // Data we collect
@@ -28,6 +28,8 @@ class image_data{
     float hw_ratio;
 
     std::string filePath;
+
+    std::string errorMessage;
 
   protected:
 
