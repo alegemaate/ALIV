@@ -1,4 +1,4 @@
-# aliv
+# aliv (Allegro Image Viewer)
 A simple Allegro 4 based image viewer.
 #### Linking
 You must link with allegro 4, allegro png, allegro gif and lib jpeg to compile. These can be found in the following locations:
