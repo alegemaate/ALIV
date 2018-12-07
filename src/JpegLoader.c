@@ -66,9 +66,9 @@ BITMAP* load_jpg_helper(FILE *f, unsigned char *memory, int size) {
     /* RGB */
     else if (s == 3) {
       for (int i = 0; i < w; i++) {
-        unsigned char r = buffer[0][i * s + 0];
+        unsigned char r = buffer[0][i * s + 2];
         unsigned char g = buffer[0][i * s + 1];
-        unsigned char b = buffer[0][i * s + 2];
+        unsigned char b = buffer[0][i * s + 0];
         p[j * w * 3 + i * 3 + 0] = r;
         p[j * w * 3 + i * 3 + 1] = g;
         p[j * w * 3 + i * 3 + 2] = b;
