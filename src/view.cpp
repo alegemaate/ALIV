@@ -79,7 +79,14 @@ bool view::load_image(std::string location) {
   }
   // SHC GM1 format
   else if (imageType == TYPE_GM1) {
-    tempBitmap = GM1Loader::load_gm1(location.c_str(), NULL);
+    std::vector<BITMAP*> return_bitmaps = GM1Loader::load_gm1(location.c_str(), NULL);
+
+    for (unsigned int i = 0; i < return_bitmaps.size(); i++) {
+      image_data tempImageData = image_data(return_bitmaps.at(i), location, errorMessage);
+      images.push_back(tempImageData);
+    }
+
+    return true;
   }
 
 
@@ -163,9 +170,9 @@ void view::update() {
   }
 
   // Move image around
-  if (keyListener::keyPressed[KEY_LEFT])
+  if (keyListener::keyPressed[KEY_LEFT] && images.size() != 0)
     image_index--;
-  if (keyListener::keyPressed[KEY_RIGHT])
+  if (keyListener::keyPressed[KEY_RIGHT] && images.size() != 0)
     image_index++;
 
   // Looperoni
@@ -214,6 +221,9 @@ void view::draw(){
   else{
     textprintf_centre_ex( buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, "No image!");
   }
+
+  // Image index
+  textprintf_ex( buffer, font, 4, 4, 0xFFFFFF, -1, "image: %i/%i", image_index, images.size());
 
   //textprintf_ex( buffer, font, 0, 0, 0xFFFFFF, -1, "%i, %i", x, y);
   //textprintf_ex( buffer, font, 0, 20, 0xFFFFFF, -1, "%i, %i", WINDOW_W/2 - x, WINDOW_H/2 - y);

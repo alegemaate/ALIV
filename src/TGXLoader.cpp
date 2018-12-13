@@ -1,7 +1,7 @@
 #include "TGXLoader.h"
 
 #include <fstream>
-#include <vector>
+#include <iostream>
 
 // Convert tgx token to name
 std::string TGXLoader::token_name(int token) {
@@ -37,6 +37,73 @@ int TGXLoader::convert_color(unsigned char byte1, unsigned char byte2) {
   return makecol(r, g, b);
 }
 
+
+// Tgx helper used by file and memory
+BITMAP* TGXLoader::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter, unsigned int width, unsigned int height) {
+  // Make bitmap
+  BITMAP *bmp = create_bitmap_ex(24, width, height);
+  clear_to_color(bmp, makecol(255, 255, 255));
+
+	// File iterator and image x and y
+	unsigned int x = 0;
+	unsigned int y = 0;
+
+	// Parse file
+	while (*iter < bytes -> size()) {
+    // Close
+    if (y >= height)
+      break;
+
+    // Extract token and length
+    int token = (unsigned char)bytes -> at(*iter) >> 5;
+    int length = ((unsigned char)bytes -> at(*iter) & 0b00011111) + 1;
+
+    // Deal with tokens accordingly
+    switch (token) {
+      // Pixel stream
+      case 0:
+        *iter += 1;
+        for (unsigned int t = x + length; x < t; x++) {
+          putpixel(bmp, x, y, convert_color((unsigned char)bytes -> at(*iter), (unsigned char)bytes -> at(*iter + 1)));
+          *iter += 2;
+        }
+        break;
+      // Transparent pixels
+      case 1:
+        *iter += 1;
+        for (unsigned int t = x + length; x < t; x++) {
+          putpixel(bmp, x, y, makecol(255, 0, 255));
+        }
+        break;
+      // Repeating pixels
+      case 2:
+        *iter += 1;
+        for (unsigned int t = x + length; x < t; x++) {
+          putpixel(bmp, x, y, convert_color((unsigned char)bytes -> at(*iter), (unsigned char)bytes -> at(*iter + 1)));
+        }
+        *iter += 2;
+        break;
+      // New line
+      case 4:
+        y += 1;
+        x = 0;
+        *iter += 1;
+        for (unsigned int t = length - 1; x < t; x++) {
+          putpixel(bmp, x, y, makecol(255, 0, 255));
+        }
+        break;
+      // Should never get here
+      default:
+        std::cout << "Invalid token (" << token << ") at " << *iter << std::endl;
+        *iter += 1;
+        break;
+    }
+	}
+
+	// Return bmp
+	return bmp;
+}
+
 // Load tgx from file
 BITMAP* TGXLoader::load_tgx(char const *filename, PALETTE pal) {
   // Create file
@@ -54,61 +121,9 @@ BITMAP* TGXLoader::load_tgx(char const *filename, PALETTE pal) {
   int width = (unsigned char)result.at(0) + 256 * (unsigned char)result.at(1);
   int height = (unsigned char)result.at(4) + 256 * (unsigned char)result.at(5);
 
-  // Make bitmap
-  BITMAP *bmp = create_bitmap_ex(24, width, height);
-  clear_to_color(bmp, makecol(255,255,255));
-
-	// File iterator and image x and y
-	unsigned int i = 8;
-	unsigned int x = 0;
-	unsigned int y = 0;
-
-	// Parse file
-	while (i < result.size()) {
-    // Extract token and length
-    int token = (((unsigned char)result.at(i)) >> 5);
-    int length = (((unsigned char)result.at(i)) & 0b00011111) + 1;
-
-    // Deal with tokens accordingly
-    switch (token) {
-      // Pixel stream
-      case 0:
-        i += 1;
-        for (unsigned int t = x + length; x < t; x++) {
-          putpixel(bmp, x, y, convert_color((unsigned char)result.at(i), (unsigned char)result.at(i + 1)));
-          i += 2;
-        }
-        break;
-      // Transparent pixels
-      case 1:
-        i += 1;
-        for (unsigned int t = x + length; x < t; x++) {
-          putpixel(bmp, x, y, makecol(255, 0, 255));
-        }
-        break;
-      // Repeating pixels
-      case 2:
-        i += 1;
-        for (unsigned int t = x + length; x < t; x++) {
-          putpixel(bmp, x, y, convert_color((unsigned char)result.at(i), (unsigned char)result.at(i + 1)));
-        }
-        i += 2;
-        break;
-      // New line
-      case 4:
-        y += 1;
-        x = 0;
-        i += 1;
-        for (unsigned int t = length - 1; x < t; x++) {
-          putpixel(bmp, x, y, makecol(255, 0, 255));
-        }
-        break;
-      // Should never get here
-      default:
-        break;
-    }
-	}
+  // Iterator start position
+  unsigned int iter = 8;
 
   // Return new image
-  return bmp;
+  return load_tgx_helper(&result, &iter, width, height);
 }

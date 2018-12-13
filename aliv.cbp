@@ -12,7 +12,6 @@
 				<Option object_output="output/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="include" />
@@ -28,6 +27,7 @@
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
 		</Compiler>
+		<Unit filename="include/GM1Loader.h" />
 		<Unit filename="include/JpegLoader.h">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -43,6 +43,7 @@
 		<Unit filename="res/resources.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
+		<Unit filename="src/GM1Loader.cpp" />
 		<Unit filename="src/JpegLoader.c">
 			<Option compilerVar="CC" />
 		</Unit>
