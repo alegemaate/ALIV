@@ -6,8 +6,8 @@
 
 class TGXLoader {
   public:
-    TGXLoader();
-    virtual ~TGXLoader();
+    TGXLoader() {};
+    virtual ~TGXLoader() {};
 
     static BITMAP* load_tgx(char const *filename, PALETTE pal);
 

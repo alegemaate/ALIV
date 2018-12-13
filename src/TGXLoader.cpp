@@ -1,17 +1,9 @@
 #include "TGXLoader.h"
 
-#include <iostream>
 #include <fstream>
 #include <vector>
 
-TGXLoader::TGXLoader() {
-
-}
-
-TGXLoader::~TGXLoader() {
-
-}
-
+// Convert tgx token to name
 std::string TGXLoader::token_name(int token) {
   switch (token) {
     case 0:
@@ -26,18 +18,27 @@ std::string TGXLoader::token_name(int token) {
   return "Invalid token";
 }
 
+// Convert 15 bit colour to 24 bit
 int TGXLoader::convert_color(unsigned char byte1, unsigned char byte2) {
+  // Extract values
   unsigned char r = byte2 >> 2;
   unsigned char g = ((byte1 >> 5) & 0b00000111) | ((byte2 << 3) & 0b00011000);
   unsigned char b = byte1 & 0b00011111;
 
-  return makecol(r * 8, g * 8, b * 8);
+  // Convert from 15 bit to 24
+  // Technically this will truncate the whites
+  //   but I can't think of a better solition
+  //   without involving float rounding.
+  r = r * 8;
+  g = g * 8;
+  b = b * 8;
+
+  // Return new colour
+  return makecol(r, g, b);
 }
 
+// Load tgx from file
 BITMAP* TGXLoader::load_tgx(char const *filename, PALETTE pal) {
-  // Debug mode
-  bool debug = false;
-
   // Create file
   std::ifstream f(filename, std::ios::binary | std::ios::ate);
   std::ifstream::pos_type pos = f.tellg();
@@ -52,25 +53,23 @@ BITMAP* TGXLoader::load_tgx(char const *filename, PALETTE pal) {
   // Header
   int width = (unsigned char)result.at(0) + 256 * (unsigned char)result.at(1);
   int height = (unsigned char)result.at(4) + 256 * (unsigned char)result.at(5);
-  std::cout << "width: " << width << std::endl;
-  std::cout << "height: " << height << std::endl;
 
   // Make bitmap
   BITMAP *bmp = create_bitmap_ex(24, width, height);
   clear_to_color(bmp, makecol(255,255,255));
 
-	// Print data
+	// File iterator and image x and y
 	unsigned int i = 8;
 	unsigned int x = 0;
 	unsigned int y = 0;
+
+	// Parse file
 	while (i < result.size()) {
+    // Extract token and length
     int token = (((unsigned char)result.at(i)) >> 5);
     int length = (((unsigned char)result.at(i)) & 0b00011111) + 1;
 
-    if (debug) {
-      std::cout << "Token: " << token_name(token) << "(" << token << ")" << " Length: " << length << std::endl;
-    }
-
+    // Deal with tokens accordingly
     switch (token) {
       // Pixel stream
       case 0:
@@ -104,12 +103,12 @@ BITMAP* TGXLoader::load_tgx(char const *filename, PALETTE pal) {
           putpixel(bmp, x, y, makecol(255, 0, 255));
         }
         break;
+      // Should never get here
       default:
-        std::cout << "Invalid Token";
         break;
     }
 	}
 
-  // Close image
+  // Return new image
   return bmp;
 }
