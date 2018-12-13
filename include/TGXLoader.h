@@ -20,9 +20,6 @@ class TGXLoader {
     // Dtor
     virtual ~TGXLoader() {};
 
-    // Look up colour from pallete
-    static int pallete_lookup(unsigned char addr, std::vector<unsigned int>* pall);
-
     // Load tgx from file
     static BITMAP* load_tgx(char const *filename, PALETTE pal);
 
@@ -35,6 +32,10 @@ class TGXLoader {
   private:
     // Token to string converter
     static std::string token_name(int token);
+
+    // Look up colour from pallete
+    static int pallete_lookup(unsigned char addr, std::vector<unsigned int>* pall);
+
 };
 
 #endif // TGXLOADER_H

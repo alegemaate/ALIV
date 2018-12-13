@@ -201,6 +201,7 @@ std::vector<BITMAP*> GM1Loader::load_gm1(char const *filename, PALETTE pal) {
         image_data.at(t).image = load_gm1_uncompressed(&result, &new_iter, &image_data.at(t));
         break;
       default:
+        std::cout << "Invalid data type (" << data_type << ")" << std::endl;
         image_data.at(t).image = nullptr;
     }
 

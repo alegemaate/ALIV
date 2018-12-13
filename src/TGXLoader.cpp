@@ -37,7 +37,7 @@ int TGXLoader::convert_color(unsigned char byte1, unsigned char byte2) {
   return makecol(r, g, b);
 }
 
-// Convert 15 bit colour to 24 bit
+// Look up address from pallette
 int TGXLoader::pallete_lookup(unsigned char addr, std::vector<unsigned int>* pall) {
   if (addr < pall -> size()) {
     return pall -> at(addr);
