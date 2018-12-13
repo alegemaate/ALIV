@@ -169,11 +169,23 @@ void view::update() {
     y = 0;
   }
 
-  // Move image around
+  // Select image
   if (keyListener::keyPressed[KEY_LEFT] && images.size() != 0)
     image_index--;
   if (keyListener::keyPressed[KEY_RIGHT] && images.size() != 0)
     image_index++;
+
+  // "Animate"
+  if (keyListener::keyPressed[KEY_A])
+    image_index = 0;
+
+  if (key[KEY_A]) {
+    animate_ticker ++;
+    if (animate_ticker > 20) {
+      image_index ++;
+      animate_ticker = 0;
+    }
+  }
 
   // Looperoni
   if (image_index < 0)

@@ -94,7 +94,7 @@ BITMAP* TGXLoader::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter,
         break;
       // Should never get here
       default:
-        std::cout << "Invalid token (" << token << ") at " << *iter << std::endl;
+        //std::cout << "Invalid token (" << token << ") at " << *iter << std::endl;
         *iter += 1;
         break;
     }

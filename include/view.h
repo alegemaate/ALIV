@@ -76,6 +76,9 @@ class view : public state{
     int click_x, click_y;
     bool dragging;
 
+    // Animate ticker
+    int animate_ticker = 0;
+
     // All images
     std::vector<image_data> images;
 };
