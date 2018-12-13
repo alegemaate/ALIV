@@ -9,6 +9,8 @@ extern "C" {
 
 #include "algif/algif.h"
 
+#include "TGXLoader.h"
+
 
 // Constrct
 view::view(){
@@ -71,6 +73,11 @@ bool view::load_image(std::string location) {
            imageType == TYPE_TGA) {
     tempBitmap = load_bitmap(location.c_str(), NULL);
   }
+  // SHC Tgx format
+  else if (imageType == TYPE_TGX) {
+    tempBitmap = TGXLoader::load_tgx(location.c_str(), NULL);
+  }
+
 
   // Make an image data type
   image_data tempImageData = image_data(tempBitmap, location, errorMessage);
@@ -240,6 +247,10 @@ int view::image_type(std::string path) {
   // TGA
   else if (type == "tga" || type == "icb" || type == "vda" || type == "vst") {
     return TYPE_TGA;
+  }
+  // TGX
+  else if (type == "tgx") {
+    return TYPE_TGX;
   }
 
   // File type not supported
