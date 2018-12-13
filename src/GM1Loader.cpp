@@ -31,9 +31,8 @@ unsigned int GM1Loader::chars_to_int(char a, char b, char c, char d) {
 }
 
 // Load animation
-BITMAP* GM1Loader::load_gm1_animation(std::vector<char> *bytes, unsigned int *iter, GM1Data *image_data) {
-	// Return bmp
-  return nullptr;
+BITMAP* GM1Loader::load_gm1_animation(std::vector<char> *bytes, unsigned int *iter, GM1Data *image_data, std::vector<unsigned int> *pall) {
+	return TGXLoader::load_tgx_helper(bytes, iter, image_data -> width, image_data -> height, pall);
 }
 
 // Load tile
@@ -133,8 +132,22 @@ std::vector<BITMAP*> GM1Loader::load_gm1(char const *filename, PALETTE pal) {
 
   std::cout << "num:" << num_pictures << " type:" << data_type_name(data_type) << " size:" << data_size << std::endl;
 
-  // Iterator, skip header and pallete
-  unsigned int i = 5120 + 88;
+  // Iterator, skip header
+  unsigned int i = 88;
+
+  // Create pallette
+  std::vector<unsigned int> pall;
+
+  // Only animations use pallette
+  if (data_type == 2) {
+    // Load pallete (constant size)
+    for (unsigned int t = i; i < t + 5120; i += 2) {
+      pall.push_back(TGXLoader::convert_color(result.at(i), result.at(i + 1)));
+    }
+  }
+
+  // Iterator, skip pallete
+  i = 5120 + 88;
 
   // Create empty image data
   for (unsigned int i = 0; i < num_pictures; i++) {
@@ -178,7 +191,7 @@ std::vector<BITMAP*> GM1Loader::load_gm1(char const *filename, PALETTE pal) {
         image_data.at(t).image = load_gm1_tgx(&result, &new_iter, &image_data.at(t));
         break;
       case 2:
-        image_data.at(t).image = load_gm1_tgx(&result, &new_iter, &image_data.at(t));
+        image_data.at(t).image = load_gm1_animation(&result, &new_iter, &image_data.at(t), &pall);
         break;
       case 3:
         image_data.at(t).image = load_gm1_tile(&result, &new_iter, &image_data.at(t));

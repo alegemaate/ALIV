@@ -24,9 +24,9 @@ class TGXLoader {
     static BITMAP* load_tgx(char const *filename, PALETTE pal);
 
     // Tgx helper used by file and memory
-    static BITMAP* load_tgx_helper(std::vector<char> *bytes, unsigned int *iter, unsigned int width, unsigned int height);
+    static BITMAP* load_tgx_helper(std::vector<char> *bytes, unsigned int *iter, unsigned int width, unsigned int height, std::vector<unsigned int>* pall = nullptr);
 
-    // Convert 16 bit to 24 colour
+    // Convert 15 bit to 24 colour
     static int convert_color(unsigned char byte1, unsigned char byte2);
 
   private:

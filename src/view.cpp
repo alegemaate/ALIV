@@ -176,9 +176,6 @@ void view::update() {
     image_index++;
 
   // "Animate"
-  if (keyListener::keyPressed[KEY_A])
-    image_index = 0;
-
   if (key[KEY_A]) {
     animate_ticker ++;
     if (animate_ticker > 20) {

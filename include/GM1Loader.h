@@ -40,7 +40,7 @@ class GM1Loader {
     static unsigned int chars_to_int(char a, char b, char c, char d);
 
     // Load animation
-    static BITMAP* load_gm1_animation(std::vector<char> *bytes, unsigned int *iter, GM1Data *image_data);
+    static BITMAP* load_gm1_animation(std::vector<char> *bytes, unsigned int *iter, GM1Data *image_data, std::vector<unsigned int> *pall);
 
     // Load tile
     static BITMAP* load_gm1_tile(std::vector<char> *bytes, unsigned int *iter, GM1Data *image_data);
