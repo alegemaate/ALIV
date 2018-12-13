@@ -27,7 +27,8 @@ enum {
   TYPE_JPG,
   TYPE_GIF,
   TYPE_TGA,
-  TYPE_TGX
+  TYPE_TGX,
+  TYPE_GM1
 };
 
 class view : public state{

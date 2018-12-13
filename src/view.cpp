@@ -10,7 +10,7 @@ extern "C" {
 #include "algif/algif.h"
 
 #include "TGXLoader.h"
-
+#include "GM1Loader.h"
 
 // Constrct
 view::view(){
@@ -76,6 +76,10 @@ bool view::load_image(std::string location) {
   // SHC Tgx format
   else if (imageType == TYPE_TGX) {
     tempBitmap = TGXLoader::load_tgx(location.c_str(), NULL);
+  }
+  // SHC GM1 format
+  else if (imageType == TYPE_GM1) {
+    tempBitmap = GM1Loader::load_gm1(location.c_str(), NULL);
   }
 
 
@@ -251,6 +255,10 @@ int view::image_type(std::string path) {
   // TGX
   else if (type == "tgx") {
     return TYPE_TGX;
+  }
+  // TGX
+  else if (type == "gm1") {
+    return TYPE_GM1;
   }
 
   // File type not supported
