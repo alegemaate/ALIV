@@ -32,6 +32,7 @@ unsigned int GM1Loader::chars_to_int(char a, char b, char c, char d) {
 
 // Load animation
 BITMAP* GM1Loader::load_gm1_animation(std::vector<char> *bytes, unsigned int *iter, GM1Data *image_data) {
+	// Return bmp
   return nullptr;
 }
 
@@ -158,16 +159,16 @@ std::vector<BITMAP*> GM1Loader::load_gm1(char const *filename, PALETTE pal) {
   for (unsigned int t = i; i < t + (num_pictures * 16); i += 16) {
     image_data.at((i - t) / 16).width = (unsigned char)result.at(i) + (unsigned char)result.at(i + 1) * 256;
     image_data.at((i - t) / 16).height = (unsigned char)result.at(i + 2) + (unsigned char)result.at(i + 3) * 256;
-    std::cout << "Image " << (i - t) / 16
+    /*std::cout << "Image " << (i - t) / 16
               << " width: " << image_data.at((i - t) / 16).width
-              << " height: " << image_data.at((i - t) / 16).height << std::endl;
+              << " height: " << image_data.at((i - t) / 16).height << std::endl;*/
   }
 
   // Go through each image
   for (unsigned int t = 0; t < image_data.size(); t++) {
     // Image data offset
     unsigned int new_iter = i + image_data.at(t).offset;
-    std::cout << "Loading image " << image_data.at(t).index << " at " << new_iter << std::endl;
+    //std::cout << "Loading image " << image_data.at(t).index << " at " << new_iter << std::endl;
 
     // Split between many gm1 types
     switch (data_type) {
