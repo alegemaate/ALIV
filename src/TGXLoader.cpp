@@ -37,6 +37,14 @@ int TGXLoader::convert_color(unsigned char byte1, unsigned char byte2) {
   return makecol(r, g, b);
 }
 
+// Convert 15 bit colour to 24 bit
+int TGXLoader::pallete_lookup(unsigned char addr, std::vector<unsigned int>* pall) {
+  if (addr < pall -> size()) {
+    return pall -> at(addr);
+  }
+  return makecol(255, 0, 0);
+}
+
 // Tgx helper used by file and memory
 BITMAP* TGXLoader::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter, unsigned int width, unsigned int height, std::vector<unsigned int>* pall) {
   // Make bitmap
@@ -70,11 +78,7 @@ BITMAP* TGXLoader::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter,
           }
           // Pallette lookup
           else {
-            int colour = 0;
-            if (bytes -> at(*iter) < pall -> size()) {
-              colour = pall -> at((unsigned char)bytes -> at(*iter));
-            }
-            putpixel(bmp, x, y, colour);
+            putpixel(bmp, x, y, pallete_lookup((unsigned char)bytes -> at(*iter), pall));
             *iter += 1;
           }
         }
@@ -98,14 +102,10 @@ BITMAP* TGXLoader::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter,
         }
         // Pallette lookup
         else {
-            int colour = 0;
-            if (bytes -> at(*iter) < pall -> size()) {
-              colour = pall -> at((unsigned char)bytes -> at(*iter));
-            }
-            for (unsigned int t = x + length; x < t; x++) {
-              putpixel(bmp, x, y, colour);
-            }
-            *iter += 1;
+          for (unsigned int t = x + length; x < t; x++) {
+            putpixel(bmp, x, y, pallete_lookup((unsigned char)bytes -> at(*iter), pall));
+          }
+          *iter += 1;
         }
         break;
       // New line
