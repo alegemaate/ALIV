@@ -13,7 +13,7 @@ extern "C" {
 #include "GM1Loader.h"
 
 // Constrct
-view::view(){
+view::view() {
   // Loading cursor
   enable_hardware_cursor();
   select_mouse_cursor(MOUSE_CURSOR_BUSY);
@@ -45,6 +45,10 @@ view::view(){
 
 // Load image from path
 bool view::load_image(std::string location) {
+  // Busy cursor
+  select_mouse_cursor(MOUSE_CURSOR_BUSY);
+  show_mouse(screen);
+
   // Temp bitmap
   BITMAP *tempBitmap = NULL;
 
@@ -65,7 +69,20 @@ bool view::load_image(std::string location) {
   }
   // Gif
   else if (imageType == TYPE_GIF) {
-    tempBitmap = load_gif(location.c_str(), NULL);
+    BITMAP **frames = nullptr;
+    int *durations = nullptr;
+    unsigned int number_frams = algif_load_animation (location.c_str(), &frames, &durations);
+
+    // Parse gif
+    for (unsigned int i = 0; i < number_frams; i ++) {
+      images.push_back(image_data(frames[i], location, errorMessage));
+    }
+
+    // Ready cursor
+    select_mouse_cursor(MOUSE_CURSOR_ARROW);
+    show_mouse(screen);
+
+    return true;
   }
   // Other (allegro supported)
   else if (imageType == TYPE_BMP ||
@@ -81,10 +98,13 @@ bool view::load_image(std::string location) {
   else if (imageType == TYPE_GM1) {
     std::vector<BITMAP*> return_bitmaps = GM1Loader::load_gm1(location.c_str(), NULL);
 
+    // Load all animation images
     for (unsigned int i = 0; i < return_bitmaps.size(); i++) {
-      image_data tempImageData = image_data(return_bitmaps.at(i), location, errorMessage);
-      images.push_back(tempImageData);
+      images.push_back(image_data(return_bitmaps.at(i), location, errorMessage));
     }
+    // Ready cursor
+    select_mouse_cursor(MOUSE_CURSOR_ARROW);
+    show_mouse(screen);
 
     return true;
   }
@@ -93,6 +113,11 @@ bool view::load_image(std::string location) {
   // Make an image data type
   image_data tempImageData = image_data(tempBitmap, location, errorMessage);
   images.push_back(tempImageData);
+
+  // Ready cursor
+  select_mouse_cursor(MOUSE_CURSOR_ARROW);
+  show_mouse(screen);
+
   return true;
 }
 
@@ -210,7 +235,6 @@ void view::draw(){
       textprintf_centre_ex(buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, images.at(image_index).errorMessage.c_str());
     }
     else if (images.at(image_index).wide) {
-      //int h_center_location = WINDOW_H/2 * image_zoom * (1 - images.at(image_index).hw_ratio);
       stretch_sprite(buffer, images.at(image_index).image,
                      WINDOW_W/2 * (1 - image_zoom) - x,
                      WINDOW_H/2 * (1 - images.at(image_index).hw_ratio * image_zoom) - y,
@@ -218,7 +242,6 @@ void view::draw(){
                      WINDOW_H * image_zoom * images.at(image_index).hw_ratio);
     }
     else {
-      //int w_center_location = WINDOW_W/2 * image_zoom * (1 - images.at(image_index).wh_ratio);
       stretch_sprite(buffer, images.at(image_index).image,
                      WINDOW_W/2 * (1 - images.at(image_index).wh_ratio * image_zoom) - x,
                      WINDOW_H/2 * (1 - image_zoom) - y,
@@ -227,19 +250,19 @@ void view::draw(){
     }
   }
   // No images
-  else{
-    textprintf_centre_ex( buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, "No image!");
+  else {
+    textprintf_centre_ex(buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, "No image!");
   }
 
   // Image index
-  textprintf_ex( buffer, font, 4, 4, 0xFFFFFF, -1, "image: %i/%i", image_index, images.size());
+  textprintf_ex(buffer, font, 4, 4, 0xFFFFFF, -1, "image: %i/%i", image_index, images.size());
 
   //textprintf_ex( buffer, font, 0, 0, 0xFFFFFF, -1, "%i, %i", x, y);
   //textprintf_ex( buffer, font, 0, 20, 0xFFFFFF, -1, "%i, %i", WINDOW_W/2 - x, WINDOW_H/2 - y);
   //textprintf_ex( buffer, font, 0, 40, 0xFFFFFF, -1, "%f", image_zoom);
 
   // Draw buffer to screen
-  draw_sprite( screen, buffer, 0, 0);
+  draw_sprite(screen, buffer, 0, 0);
 }
 
 // Get image type
@@ -275,7 +298,7 @@ int view::image_type(std::string path) {
   else if (type == "tgx") {
     return TYPE_TGX;
   }
-  // TGX
+  // GM1
   else if (type == "gm1") {
     return TYPE_GM1;
   }
