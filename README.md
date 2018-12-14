@@ -1,6 +1,19 @@
 # aliv (Allegro Image Viewer)
 A simple Allegro 4 based image viewer.
-#### Linking
+
+### Features
+Support for opening
+- png
+- jpeg
+- bmp
+- gif (spotty)
+- pcx
+- tga
+- tgx (Firefly image format)
+- gm1 (Firefly animation format)
+
+
+### Linking and Compiling
 You must link with allegro 4, allegro png, allegro gif and lib jpeg to compile. These can be found in the following locations:
 - [Allegro 4](http://liballeg.org/api.html)
 - [alpng](http://alpng.sourceforge.net/)
