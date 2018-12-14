@@ -13,7 +13,7 @@ Support for opening
 - gm1 (Firefly animation format)
 
 
-#### Linking
+### Linking and Compiling
 You must link with allegro 4, allegro png, allegro gif and lib jpeg to compile. These can be found in the following locations:
 - [Allegro 4](http://liballeg.org/api.html)
 - [alpng](http://alpng.sourceforge.net/)
