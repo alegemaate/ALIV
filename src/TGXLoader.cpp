@@ -118,9 +118,6 @@ BITMAP* TGXLoader::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter,
         y += 1;
         x = 0;
         *iter += 1;
-        for (unsigned int t = length - 1; x < t; x++) {
-          putpixel(bmp, x, y, makecol(255, 0, 255));
-        }
         break;
       // Should never get here
       default:
@@ -148,8 +145,8 @@ BITMAP* TGXLoader::load_tgx(char const *filename, PALETTE pal) {
   f.read(&result[0], pos);
 
   // Header
-  int width = (unsigned char)result.at(0) + 256 * (unsigned char)result.at(1);
-  int height = (unsigned char)result.at(4) + 256 * (unsigned char)result.at(5);
+  unsigned int width = (unsigned char)result.at(0) + 256 * (unsigned char)result.at(1);
+  unsigned int height = (unsigned char)result.at(4) + 256 * (unsigned char)result.at(5);
 
   // Iterator start position
   unsigned int iter = 8;
