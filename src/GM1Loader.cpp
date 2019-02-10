@@ -130,7 +130,7 @@ std::vector<BITMAP*> GM1Loader::load_gm1(char const *filename, PALETTE pal) {
   unsigned int data_type = (unsigned char)result.at(20);
   unsigned int data_size = (unsigned char)result.at(81) + (unsigned char)result.at(82) * 256;
 
-  std::cout << "num:" << num_pictures << " type:" << data_type_name(data_type) << " size:" << data_size << std::endl;
+  //std::cout << "num:" << num_pictures << " type:" << data_type_name(data_type) << " size:" << data_size << std::endl;
 
   // Iterator, skip header
   unsigned int i = 88;
