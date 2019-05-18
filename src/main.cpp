@@ -10,7 +10,7 @@
 
 // Extentions to support PNG, JPG and GIF
 // Allegro handles BMP, TIF and a few others
-#include <alpng.h>
+#include <loadpng.h>
 
 #include "algif/algif.h"
 #include "state.h"
@@ -70,12 +70,11 @@ void setup() {
   install_timer();
   install_keyboard();
   install_mouse();
-  install_joystick(JOY_TYPE_AUTODETECT);
-  install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, ".");
-  set_color_depth(24);
+
+  set_display_switch_mode(SWITCH_BACKGROUND);
+  set_color_depth(32);
 
   // Addons
-  alpng_init();
   algif_init();
 
   // Close button

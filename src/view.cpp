@@ -3,7 +3,7 @@
 extern "C" {
   #include "JpegLoader.h"
 }
-#include <alpng.h>
+#include <loadpng.h>
 #include <math.h>
 #include <iostream>
 

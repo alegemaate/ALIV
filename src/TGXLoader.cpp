@@ -48,7 +48,7 @@ int TGXLoader::pallete_lookup(unsigned char addr, std::vector<unsigned int>* pal
 // Tgx helper used by file and memory
 BITMAP* TGXLoader::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter, unsigned int width, unsigned int height, std::vector<unsigned int>* pall) {
   // Make bitmap
-  BITMAP *bmp = create_bitmap_ex(24, width, height);
+  BITMAP *bmp = create_bitmap( width, height);
   clear_to_color(bmp, makecol(255, 255, 255));
 
 	// File iterator and image x and y

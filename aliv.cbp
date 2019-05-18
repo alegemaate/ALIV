@@ -13,19 +13,19 @@
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-g" />
+					<Add option="-Wall" />
+					<Add option="-std=c++14" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
-					<Add option="-lalpng" />
-					<Add option="-lalleg" />
+					<Add option="-lloadpng" />
+					<Add option="-lalleg44" />
 					<Add option="-ljpeg" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
 		</Compiler>
 		<Unit filename="include/GM1Loader.h" />
 		<Unit filename="include/JpegLoader.h">

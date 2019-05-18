@@ -44,7 +44,7 @@ BITMAP* GM1Loader::load_gm1_tile(std::vector<char> *bytes, unsigned int *iter, G
 	unsigned int y = 0;
 
 	// Make bitmap
-  BITMAP *bmp = create_bitmap_ex(24, image_data -> width, image_data -> height);
+  BITMAP *bmp = create_bitmap(image_data -> width, image_data -> height);
   clear_to_color(bmp, makecol(255,255,255));
 
 	// Parse file
@@ -84,7 +84,7 @@ BITMAP* GM1Loader::load_gm1_uncompressed(std::vector<char> *bytes, unsigned int 
 	unsigned int img_size = image_data -> width * image_data -> height;
 
 	// Make bitmap
-  BITMAP *bmp = create_bitmap_ex(24, image_data -> width, image_data -> height);
+  BITMAP *bmp = create_bitmap(image_data -> width, image_data -> height);
   clear_to_color(bmp, makecol(255,255,255));
 
 	// Parse file
@@ -128,9 +128,6 @@ std::vector<BITMAP*> GM1Loader::load_gm1(char const *filename, PALETTE pal) {
   // Header
   unsigned int num_pictures = (unsigned char)result.at(12) + (unsigned char)result.at(13) * 256;
   unsigned int data_type = (unsigned char)result.at(20);
-  unsigned int data_size = (unsigned char)result.at(81) + (unsigned char)result.at(82) * 256;
-
-  //std::cout << "num:" << num_pictures << " type:" << data_type_name(data_type) << " size:" << data_size << std::endl;
 
   // Iterator, skip header
   unsigned int i = 88;
