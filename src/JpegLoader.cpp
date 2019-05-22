@@ -37,12 +37,13 @@ int JpegLoader::Load(const char* filename) {
   nWidth = cinfo.image_width;
   nHeight = cinfo.image_height;
   nNumComponent = cinfo.num_components;
-  pData = new uint8_t[nWidth * nHeight * nNumComponent];
+  pData = new uint8_t[cinfo.output_width * cinfo.output_height * nNumComponent];
 
   // Fill in data
-  while(cinfo.output_scanline < cinfo.image_height) {
-		uint8_t* p = pData + cinfo.output_scanline * cinfo.image_width * cinfo.num_components;
-		jpeg_read_scanlines(&cinfo, &pData, nHeight);
+  uint8_t* p = pData;
+  while(cinfo.output_scanline < cinfo.output_height) {
+		jpeg_read_scanlines(&cinfo, &p, 1);
+		p += cinfo.output_width * cinfo.num_components;
 	}
 
   // Close
@@ -61,17 +62,15 @@ int JpegLoader::LoadBitmap() {
   // Populate allegro bitmap
   for(uint32_t h = 0; h < nHeight; h++) {
     for(uint32_t w = 0; w < nWidth; w++) {
-
       // Grayscale
       if (nNumComponent == 1) {
-        uint32_t index = (h * w + w);
+        uint32_t index = (h * nWidth + w);
         ((long *)pImage->line[h])[w] = makecol(pData[index], pData[index], pData[index]);
       }
       // RGB
       else if (nNumComponent == 3) {
-        uint32_t index = (h * w + w) * 3;
-        putpixel(pImage, w, h, makecol(pData[index + 0], pData[index + 1], pData[index + 2]));
-        //((long *)pImage->line[h])[w] = makecol(pData[index + 2], pData[index + 1], pData[index]);
+        uint32_t index = (h * nWidth + w) * 3;
+        ((long *)pImage->line[h])[w] = makecol(pData[index], pData[index + 1], pData[index + 2]);
       }
       else {
         printf("Error! Cannot read JPEG data. Invalid number of components.\n");
@@ -92,8 +91,7 @@ void JpegLoader::ErrorExit(j_common_ptr cinfo) {
 
 // JPEG message handler
 void JpegLoader::OutputMessage(j_common_ptr cinfo) {
-	// disable error messages
-	/*char buffer[JMSG_LENGTH_MAX];
+	char buffer[JMSG_LENGTH_MAX];
 	(*cinfo->err->format_message) (cinfo, buffer);
-	fprintf(stderr, "%s\n", buffer);*/
+	fprintf(stderr, "%s\n", buffer);
 }
