@@ -6,7 +6,7 @@ Support for opening
 - png
 - jpeg
 - bmp
-- gif (spotty)
+- gif (including animated!)
 - pcx
 - tga
 - tgx (Firefly image format)
