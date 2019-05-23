@@ -3,15 +3,14 @@
 #include <loadpng.h>
 #include <math.h>
 #include <iostream>
+#include <algorithm>
 
 #include "JpegLoader.h"
 #include "PngLoader.h"
 #include "PcxLoader.h"
 #include "TgaLoader.h"
 #include "BmpLoader.h"
-
-#include "algif/algif.h"
-
+#include "GifLoader.h"
 #include "TGXLoader.h"
 #include "GM1Loader.h"
 
@@ -47,72 +46,33 @@ view::view() {
 }
 
 // Load image from path
-bool view::load_image(std::string location) {
+bool view::LoadImage(const char* location) {
   // Busy cursor
   select_mouse_cursor(MOUSE_CURSOR_BUSY);
   show_mouse(screen);
 
-  // Temp bitmap
-  BITMAP *tempBitmap = NULL;
+  // Get loader
+  ImageLoader *loader = GetLoader(location);
 
-  // Error message
-  std::string errorMessage = "";
+  // Load
+  if (loader) {
+    loader -> Load(location);
+    images.push_back(loader);
 
-  // Image type
-  int imageType = image_type(location);
-
-  // Load JPG
-  if (imageType == TYPE_PNG) {
-    PngLoader *pLoad = new PngLoader();
-    pLoad -> Load(location.c_str());
-    tempBitmap = pLoad -> GetBitmap();
-  }
-  // Png
-  else if (imageType == TYPE_JPG) {
-    JpegLoader *jLoad = new JpegLoader();
-    jLoad -> Load(location.c_str());
-    tempBitmap = jLoad -> GetBitmap();
-  }
-  // Gif
-  else if (imageType == TYPE_GIF) {
-    BITMAP **frames = nullptr;
-    int *durations = nullptr;
-    unsigned int number_frams = algif_load_animation (location.c_str(), &frames, &durations);
-
-    // Parse gif
-    for (unsigned int i = 0; i < number_frams; i ++) {
-      images.push_back(image_data(frames[i], location, errorMessage));
-    }
-
-    // Ready cursor
     select_mouse_cursor(MOUSE_CURSOR_ARROW);
     show_mouse(screen);
 
     return true;
   }
-  // Other (allegro supported)
-  else if (imageType == TYPE_BMP) {
-    BmpLoader *bLoad = new BmpLoader();
-    bLoad -> Load(location.c_str());
-    tempBitmap = bLoad -> GetBitmap();
-  }
-  else if (imageType == TYPE_PCX) {
-    PcxLoader *pLoad = new PcxLoader();
-    pLoad -> Load(location.c_str());
-    tempBitmap = pLoad -> GetBitmap();
-  }
-  else if (imageType == TYPE_TGA) {
-    TgaLoader *tLoad = new TgaLoader();
-    tLoad -> Load(location.c_str());
-    tempBitmap = tLoad -> GetBitmap();
-  }
+
+
   // SHC Tgx format
-  else if (imageType == TYPE_TGX) {
-    tempBitmap = TGXLoader::load_tgx(location.c_str(), NULL);
+  /*else if (imageType == TYPE_TGX) {
+    tempBitmap = TGXLoader::load_tgx(location, NULL);
   }
   // SHC GM1 format
   else if (imageType == TYPE_GM1) {
-    std::vector<BITMAP*> return_bitmaps = GM1Loader::load_gm1(location.c_str(), NULL);
+    std::vector<BITMAP*> return_bitmaps = GM1Loader::load_gm1(location, NULL);
 
     // Load all animation images
     for (unsigned int i = 0; i < return_bitmaps.size(); i++) {
@@ -123,18 +83,9 @@ bool view::load_image(std::string location) {
     show_mouse(screen);
 
     return true;
-  }
+  }*/
 
-
-  // Make an image data type
-  image_data tempImageData = image_data(tempBitmap, location, errorMessage);
-  images.push_back(tempImageData);
-
-  // Ready cursor
-  select_mouse_cursor(MOUSE_CURSOR_ARROW);
-  show_mouse(screen);
-
-  return true;
+  return false;
 }
 
 // Update
@@ -177,7 +128,7 @@ void view::update() {
   // Prevent image from going off screen
   if (image_zoom > 1.0f && images.size() > 0) {
     // Different corners
-    if (images.at(image_index).wide) {
+    if (images.at(image_index) -> GetHWRatio() < 1.0f) {
       // X
       if (x < WINDOW_W/2 * (1 - image_zoom))
         x = WINDOW_W/2 * (1 - image_zoom);
@@ -185,17 +136,17 @@ void view::update() {
         x = WINDOW_W/2 * (1 + image_zoom) - WINDOW_W;
 
       // Y
-      if (y < WINDOW_H/2 * (1 - images.at(image_index).hw_ratio * image_zoom))
-        y = WINDOW_H/2 * (1 - images.at(image_index).hw_ratio * image_zoom);
-      else if (y > WINDOW_H/2 * (1 + image_zoom * images.at(image_index).hw_ratio) - WINDOW_H)
-        y = WINDOW_H/2 * (1 + image_zoom * images.at(image_index).hw_ratio) - WINDOW_H;
+      if (y < WINDOW_H/2 * (1 - images.at(image_index) -> GetHWRatio() * image_zoom))
+        y = WINDOW_H/2 * (1 - images.at(image_index) -> GetHWRatio() * image_zoom);
+      else if (y > WINDOW_H/2 * (1 + image_zoom * images.at(image_index) -> GetHWRatio()) - WINDOW_H)
+        y = WINDOW_H/2 * (1 + image_zoom * images.at(image_index) -> GetHWRatio()) - WINDOW_H;
     }
     else{
       // X
-      if (x < WINDOW_W/2 * (1 - images.at(image_index).wh_ratio * image_zoom))
-        x = WINDOW_W/2 * (1 - images.at(image_index).wh_ratio * image_zoom);
-      else if (x > WINDOW_W/2 * (1 + images.at(image_index).wh_ratio * image_zoom) - WINDOW_W)
-        x = WINDOW_W/2 * (1 + images.at(image_index).wh_ratio * image_zoom) - WINDOW_W;
+      if (x < WINDOW_W/2 * (1 - images.at(image_index) -> GetWHRatio() * image_zoom))
+        x = WINDOW_W/2 * (1 - images.at(image_index) -> GetWHRatio() * image_zoom);
+      else if (x > WINDOW_W/2 * (1 + images.at(image_index) -> GetWHRatio() * image_zoom) - WINDOW_W)
+        x = WINDOW_W/2 * (1 + images.at(image_index) -> GetWHRatio() * image_zoom) - WINDOW_W;
 
       // Y
       if (y < WINDOW_H/2 * (1 - image_zoom))
@@ -234,7 +185,7 @@ void view::update() {
 
   // Set title
   if (images.size() > 0) {
-    std::string titlePath = "ALIMG - " + images.at(image_index).filePath;
+    std::string titlePath = std::string("ALIMG - ") + images.at(image_index) -> GetLocation();
     set_window_title(titlePath.c_str());
   }
 }
@@ -247,21 +198,21 @@ void view::draw(){
   // Draw all images stretched if needed
   if (images.size() > (unsigned)image_index){
     // Unloadable image
-    if (images.at(image_index).image == NULL) {
-      textprintf_centre_ex(buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, images.at(image_index).errorMessage.c_str());
+    if (images.at(image_index) -> GetBitmap() == nullptr) {
+      textprintf_centre_ex(buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, "Oh Noes! Could not load image..."/*images.at(image_index).errorMessage.c_str()*/);
     }
-    else if (images.at(image_index).wide) {
-      stretch_sprite(buffer, images.at(image_index).image,
+    else if (images.at(image_index) -> GetHWRatio() < 1.0f) {
+      stretch_sprite(buffer, images.at(image_index) -> GetBitmap(),
                      WINDOW_W/2 * (1 - image_zoom) - x,
-                     WINDOW_H/2 * (1 - images.at(image_index).hw_ratio * image_zoom) - y,
+                     WINDOW_H/2 * (1 - images.at(image_index) -> GetHWRatio() * image_zoom) - y,
                      WINDOW_W * image_zoom,
-                     WINDOW_H * image_zoom * images.at(image_index).hw_ratio);
+                     WINDOW_H * image_zoom * images.at(image_index) -> GetHWRatio());
     }
     else {
-      stretch_sprite(buffer, images.at(image_index).image,
-                     WINDOW_W/2 * (1 - images.at(image_index).wh_ratio * image_zoom) - x,
+      stretch_sprite(buffer, images.at(image_index) -> GetBitmap(),
+                     WINDOW_W/2 * (1 - images.at(image_index) -> GetWHRatio() * image_zoom) - x,
                      WINDOW_H/2 * (1 - image_zoom) - y,
-                     WINDOW_W * image_zoom * images.at(image_index).wh_ratio,
+                     WINDOW_W * image_zoom * images.at(image_index) -> GetWHRatio(),
                      WINDOW_H * image_zoom);
     }
   }
@@ -282,52 +233,45 @@ void view::draw(){
 }
 
 // Get image type
-int view::image_type(std::string path) {
+ImageLoader* view::GetLoader(const char* path) {
   // Extract type
-  std::string type = strLower(path.substr(path.find_last_of(".") + 1));
+  std::string sPath = path;
+  std::string type = sPath.substr(sPath.find_last_of(".") + 1);
+  std::transform(type.begin(), type.end(), type.begin(), ::tolower);
 
   // JPG
   if (type == "jpg" || type == "jpeg" || type == "jpe" || type == "jif" || type == "jfif" || type == "jfi") {
-    return TYPE_JPG;
+    return new JpegLoader();
   }
   // PNG
   else if (type == "png") {
-    return TYPE_PNG;
+    return new PngLoader();
   }
   // PCX
   else if (type == "pcx") {
-    return TYPE_PCX;
+    return new PcxLoader();
   }
   // BMP
   else if (type == "bmp" || type == "dib") {
-    return TYPE_BMP;
+    return new BmpLoader();
   }
   // GIF
   else if (type == "gif") {
-    return TYPE_GIF;
+    return new GifLoader();
   }
   // TGA
   else if (type == "tga" || type == "icb" || type == "vda" || type == "vst") {
-    return TYPE_TGA;
+    return new TgaLoader();
   }
   // TGX
-  else if (type == "tgx") {
+  /*else if (type == "tgx") {
     return TYPE_TGX;
   }
   // GM1
   else if (type == "gm1") {
     return TYPE_GM1;
-  }
+  }*/
 
   // File type not supported
-  return TYPE_INV;
-}
-
-// Convert string to lower
-std::string view::strLower(std::string str) {
-  std::locale loc;
-  std::string newStr = "";
-  for (std::string::size_type i = 0; i < str.length(); ++i)
-    newStr += std::tolower(str[i],loc);
-  return newStr;
+  return nullptr;
 }

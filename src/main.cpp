@@ -8,10 +8,6 @@
 // Libs
 #include <allegro.h>
 
-// Extentions to support PNG, JPG and GIF
-// Allegro handles BMP, TIF and a few others
-#include <loadpng.h>
-
 #include "algif/algif.h"
 #include "state.h"
 #include "init.h"
@@ -99,7 +95,7 @@ int main (int argc, char *argv[]) {
   // Ensure view_state casted and load images
   if (view_state != nullptr) {
     for (int i = 1; i < argc; i++) {
-      view_state -> load_image(std::string(argv[i]));
+      view_state -> LoadImage(argv[i]);
     }
   }
 

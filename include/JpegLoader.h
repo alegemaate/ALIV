@@ -1,3 +1,10 @@
+/*
+ * Jpeg Loader
+ * Allan Legemaate
+ * 22/05/2019
+ * Loads JPEG
+ */
+
 #ifndef JPEGLOADER_H
 #define JPEGLOADER_H
 

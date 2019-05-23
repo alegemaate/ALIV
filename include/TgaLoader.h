@@ -1,3 +1,10 @@
+/*
+ * Tga Loader
+ * Allan Legemaate
+ * 22/05/2019
+ * Loads TGA
+ */
+
 #ifndef TGALOADER_H
 #define TGALOADER_H
 

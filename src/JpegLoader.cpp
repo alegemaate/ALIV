@@ -77,6 +77,8 @@ int JpegLoader::LoadBitmap() {
     }
   }
 
+  SetDimensions();
+
   return 0;
 }
 
