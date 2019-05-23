@@ -20,6 +20,7 @@ class ImageLoader {
     uint32_t GetWidth();
     uint32_t GetHeight();
     uint8_t* GetRawData();
+
     virtual BITMAP* GetBitmap();
     const char* GetLocation();
     float GetHWRatio();
