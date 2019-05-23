@@ -29,9 +29,6 @@ void setup() {
   set_display_switch_mode(SWITCH_BACKGROUND);
   set_color_depth(32);
 
-  // Addons
-  algif_init();
-
   // Close button
   LOCK_FUNCTION(close_button_handler);
   set_close_button_callback(close_button_handler);

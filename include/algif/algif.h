@@ -42,7 +42,6 @@ struct GIF_FRAME
 };
 
 /* Simple use. */
-void algif_init (void);
 int algif_load_animation (char const *filename, BITMAP ***frames, int **durations);
 BITMAP *load_gif (AL_CONST char *filename, RGB *pal);
 int save_gif (AL_CONST char *filename, BITMAP *bmp, AL_CONST RGB *pal);
