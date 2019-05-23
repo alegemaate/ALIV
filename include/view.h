@@ -12,47 +12,28 @@
 #include <vector>
 #include <string>
 
-#include "image_data.h"
-#include "state.h"
+#include "ImageLoader.h"
 #include "keyListener.h"
 
-#define WINDOW_W SCREEN_W
-#define WINDOW_H SCREEN_H
-
-enum {
-  TYPE_INV,
-  TYPE_PNG,
-  TYPE_BMP,
-  TYPE_PCX,
-  TYPE_JPG,
-  TYPE_GIF,
-  TYPE_TGA,
-  TYPE_TGX,
-  TYPE_GM1
-};
-
-class view : public state{
+class view {
   public:
     // Construct/deconstruct
     view();
-    virtual ~view() {};
+    ~view() {};
 
     // Override parent
-    virtual void update() override;
+    void update();
 
     // Draw view
-    virtual void draw() override;
+    void draw();
 
     // Load image from file
-    bool load_image(std::string location);
+    bool LoadImage(const char* location);
   protected:
 
   private:
-    // Gets file type
-    int image_type(std::string location);
-
-    // Converts string to lowercase
-    std::string strLower(std::string str);
+    // Gets loader for file
+    ImageLoader* GetLoader(const char* location);
 
     // Listens to keys for down and up
     keyListener the_listener;
@@ -80,7 +61,7 @@ class view : public state{
     int animate_ticker = 0;
 
     // All images
-    std::vector<image_data> images;
+    std::vector<ImageLoader*> images;
 };
 
 #endif // GAME_H

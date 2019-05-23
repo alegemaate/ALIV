@@ -20,15 +20,23 @@ class ImageLoader {
     uint32_t GetWidth();
     uint32_t GetHeight();
     uint8_t* GetRawData();
-    BITMAP* GetBitmap();
+
+    virtual BITMAP* GetBitmap();
+    const char* GetLocation();
+    float GetHWRatio();
+    float GetWHRatio();
 
   protected:
-    virtual int LoadBitmap() = 0;
+    void SetDimensions();
 
     uint32_t nWidth;
     uint32_t nHeight;
     uint8_t* pData;
     BITMAP* pImage;
+    const char* sLocation;
+
+    float nWHRatio;
+    float nHWRatio;
 };
 
 #endif // IMAGELOADER_H

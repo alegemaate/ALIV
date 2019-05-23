@@ -1,3 +1,10 @@
+/*
+ * Jpeg Loader
+ * Allan Legemaate
+ * 22/05/2019
+ * Loads JPEG
+ */
+
 #ifndef JPEGLOADER_H
 #define JPEGLOADER_H
 
@@ -22,7 +29,7 @@ class JpegLoader: public ImageLoader {
     virtual int Load(const char* filename) override;
 
   private:
-    virtual int LoadBitmap() override;
+    int LoadBitmap();
 
     uint8_t nNumComponent;
 

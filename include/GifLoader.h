@@ -1,30 +1,31 @@
 /*
- * Gm1 Loader
+ * Gif Loader
  * Allan Legemaate
  * 22/05/2019
- * Loads GM1
+ * Loads GIF
  */
 
-#ifndef GM1LOADER_H
-#define GM1LOADER_H
+#ifndef GIFLOADER_H
+#define GIFLOADER_H
 
 #include "ImageLoader.h"
 
 #include <chrono>
-#include <vector>
 
-class Gm1Loader: public ImageLoader {
+class GifLoader: public ImageLoader {
   public:
-    Gm1Loader();
-    ~Gm1Loader();
+    GifLoader();
+    ~GifLoader();
 
     virtual int Load(const char* filename) override;
     virtual BITMAP* GetBitmap() override;
   private:
-    std::vector<BITMAP*> frames;
+    BITMAP **frames;
+    int *durations;
+    unsigned int numFrames;
     int frame;
 
     std::chrono::time_point<std::chrono::steady_clock> lastTick;
 };
 
-#endif // GM1LOADER_H
+#endif // GIFLOADER_H

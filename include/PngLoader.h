@@ -1,18 +1,18 @@
 /*
- * Tgx Loader
+ * Png Loader
  * Allan Legemaate
  * 22/05/2019
- * Loads TGX
+ * Loads PNG
  */
 
-#ifndef TGXLOADER_H
-#define TGXLOADER_H
+#ifndef PNGLOADER_H
+#define PNGLOADER_H
 
 #include "ImageLoader.h"
 
-class TgxLoader: public ImageLoader {
+class PngLoader: public ImageLoader {
   public:
     virtual int Load(const char* filename) override;
 };
 
-#endif // TGXLOADER_H
+#endif // PNGLOADER_H

@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <iostream>
-
 // Load initial JPEG Data
 int JpegLoader::Load(const char* filename) {
   // Data
@@ -12,6 +10,8 @@ int JpegLoader::Load(const char* filename) {
   ErrorManager errorManager;
 
   // Load file
+  sLocation = filename;
+
   FILE *pFile = fopen(filename, "rb");
   if (!pFile)
     return 1;
@@ -78,6 +78,8 @@ int JpegLoader::LoadBitmap() {
       }
     }
   }
+
+  SetDimensions();
 
   return 0;
 }

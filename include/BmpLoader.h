@@ -1,18 +1,18 @@
 /*
- * Tgx Loader
+ * Bmp Loader
  * Allan Legemaate
  * 22/05/2019
- * Loads TGX
+ * Loads BMP
  */
 
-#ifndef TGXLOADER_H
-#define TGXLOADER_H
+#ifndef BMPLOADER_H
+#define BMPLOADER_H
 
 #include "ImageLoader.h"
 
-class TgxLoader: public ImageLoader {
+class BmpLoader: public ImageLoader {
   public:
     virtual int Load(const char* filename) override;
 };
 
-#endif // TGXLOADER_H
+#endif // BMPLOADER_H

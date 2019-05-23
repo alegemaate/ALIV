@@ -1,18 +1,18 @@
 /*
- * Tgx Loader
+ * Pcx Loader
  * Allan Legemaate
  * 22/05/2019
- * Loads TGX
+ * Loads PCX
  */
 
-#ifndef TGXLOADER_H
-#define TGXLOADER_H
+#ifndef PCXLOADER_H
+#define PCXLOADER_H
 
 #include "ImageLoader.h"
 
-class TgxLoader: public ImageLoader {
+class PcxLoader: public ImageLoader {
   public:
     virtual int Load(const char* filename) override;
 };
 
-#endif // TGXLOADER_H
+#endif // PCXLOADER_H

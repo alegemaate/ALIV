@@ -1,18 +1,18 @@
 /*
- * Tgx Loader
+ * Tga Loader
  * Allan Legemaate
  * 22/05/2019
- * Loads TGX
+ * Loads TGA
  */
 
-#ifndef TGXLOADER_H
-#define TGXLOADER_H
+#ifndef TGALOADER_H
+#define TGALOADER_H
 
 #include "ImageLoader.h"
 
-class TgxLoader: public ImageLoader {
+class TgaLoader: public ImageLoader {
   public:
     virtual int Load(const char* filename) override;
 };
 
-#endif // TGXLOADER_H
+#endif // TGALOADER_H
