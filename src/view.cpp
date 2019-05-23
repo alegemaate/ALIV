@@ -1,11 +1,14 @@
 #include "view.h"
 
-extern "C" {
-  #include "JpegLoader.h"
-}
 #include <loadpng.h>
 #include <math.h>
 #include <iostream>
+
+#include "JpegLoader.h"
+#include "PngLoader.h"
+#include "PcxLoader.h"
+#include "TgaLoader.h"
+#include "BmpLoader.h"
 
 #include "algif/algif.h"
 
@@ -60,12 +63,15 @@ bool view::load_image(std::string location) {
 
   // Load JPG
   if (imageType == TYPE_PNG) {
-    tempBitmap = load_png(location.c_str(), NULL);
+    PngLoader *pLoad = new PngLoader();
+    pLoad -> Load(location.c_str());
+    tempBitmap = pLoad -> GetBitmap();
   }
   // Png
   else if (imageType == TYPE_JPG) {
-    tempBitmap = load_jpg(location.c_str(), NULL);
-    errorMessage = lastError;
+    JpegLoader *jLoad = new JpegLoader();
+    jLoad -> Load(location.c_str());
+    tempBitmap = jLoad -> GetBitmap();
   }
   // Gif
   else if (imageType == TYPE_GIF) {
@@ -85,10 +91,20 @@ bool view::load_image(std::string location) {
     return true;
   }
   // Other (allegro supported)
-  else if (imageType == TYPE_BMP ||
-           imageType == TYPE_PCX ||
-           imageType == TYPE_TGA) {
-    tempBitmap = load_bitmap(location.c_str(), NULL);
+  else if (imageType == TYPE_BMP) {
+    BmpLoader *bLoad = new BmpLoader();
+    bLoad -> Load(location.c_str());
+    tempBitmap = bLoad -> GetBitmap();
+  }
+  else if (imageType == TYPE_PCX) {
+    PcxLoader *pLoad = new PcxLoader();
+    pLoad -> Load(location.c_str());
+    tempBitmap = pLoad -> GetBitmap();
+  }
+  else if (imageType == TYPE_TGA) {
+    TgaLoader *tLoad = new TgaLoader();
+    tLoad -> Load(location.c_str());
+    tempBitmap = tLoad -> GetBitmap();
   }
   // SHC Tgx format
   else if (imageType == TYPE_TGX) {

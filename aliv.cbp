@@ -27,11 +27,16 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="include/BmpLoader.h" />
 		<Unit filename="include/GM1Loader.h" />
+		<Unit filename="include/ImageLoader.h" />
 		<Unit filename="include/JpegLoader.h">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="include/PcxLoader.h" />
+		<Unit filename="include/PngLoader.h" />
 		<Unit filename="include/TGXLoader.h" />
+		<Unit filename="include/TgaLoader.h" />
 		<Unit filename="include/algif/algif.h" />
 		<Unit filename="include/algif/gif.h" />
 		<Unit filename="include/algif/lzw.h" />
@@ -43,11 +48,17 @@
 		<Unit filename="res/resources.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
+		<Unit filename="src/BmpLoader.cpp" />
 		<Unit filename="src/GM1Loader.cpp" />
+		<Unit filename="src/ImageLoader.cpp" />
 		<Unit filename="src/JpegLoader.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/JpegLoader.cpp" />
+		<Unit filename="src/PcxLoader.cpp" />
+		<Unit filename="src/PngLoader.cpp" />
 		<Unit filename="src/TGXLoader.cpp" />
+		<Unit filename="src/TgaLoader.cpp" />
 		<Unit filename="src/algif/algif.c">
 			<Option compilerVar="CC" />
 		</Unit>
