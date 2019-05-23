@@ -2,8 +2,6 @@
 
 #include "algif/algif.h"
 
-#include <iostream>
-
 GifLoader::GifLoader() {
   frames = nullptr;
   durations = nullptr;

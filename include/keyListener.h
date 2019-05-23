@@ -10,22 +10,17 @@
 #define KEYLISTENER_H
 
 #include <allegro.h>
-#include <iostream>
 
-class keyListener
-{
+class keyListener {
   public:
-    keyListener();
-    virtual ~keyListener();
+    keyListener() {};
+    virtual ~keyListener() {};
 
     void update();
 
     static bool keyPressed[KEY_MAX];
     static bool keyReleased[KEY_MAX];
     static bool lastTicksKey[KEY_MAX];
-
-  protected:
-  private:
 };
 
 #endif // KEYLISTENER_H

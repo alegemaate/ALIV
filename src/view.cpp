@@ -2,7 +2,6 @@
 
 #include <loadpng.h>
 #include <math.h>
-#include <iostream>
 #include <algorithm>
 
 #include "JpegLoader.h"
