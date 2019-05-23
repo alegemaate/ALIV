@@ -222,7 +222,7 @@ void view::draw(){
   }
 
   // Image index
-  textprintf_ex(buffer, font, 4, 4, 0xFFFFFF, -1, "image: %i/%i", image_index, images.size());
+  textprintf_ex(buffer, font, 4, 4, 0xFFFFFF, -1, "image: %i/%i", image_index + (images.size() > 0 ? 1 : 0), images.size());
 
   //textprintf_ex( buffer, font, 0, 0, 0xFFFFFF, -1, "%i, %i", x, y);
   //textprintf_ex( buffer, font, 0, 20, 0xFFFFFF, -1, "%i, %i", WINDOW_W/2 - x, WINDOW_H/2 - y);

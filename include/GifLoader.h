@@ -10,6 +10,8 @@
 
 #include "ImageLoader.h"
 
+#include <chrono>
+
 class GifLoader: public ImageLoader {
   public:
     GifLoader();
@@ -22,6 +24,8 @@ class GifLoader: public ImageLoader {
     int *durations;
     unsigned int numFrames;
     int frame;
+
+    std::chrono::time_point<std::chrono::steady_clock> lastTick;
 };
 
 #endif // GIFLOADER_H
