@@ -13,7 +13,6 @@
 #include <string>
 
 #include "ImageLoader.h"
-#include "image_data.h"
 #include "keyListener.h"
 
 class view {
