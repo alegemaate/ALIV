@@ -41,6 +41,9 @@ void setup() {
 
   // Title
   set_window_title("ALIMG - Allegro Image Viewer");
+
+  // Allow background
+  set_display_switch_mode(SWITCH_BACKGROUND);
 }
 
 // Start here
