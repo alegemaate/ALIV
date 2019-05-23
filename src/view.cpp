@@ -1,12 +1,10 @@
 #include "view.h"
 
-extern "C" {
-  #include "JpegLoader.h"
-}
 #include <loadpng.h>
 #include <math.h>
 #include <iostream>
 
+#include "JpegLoader.h"
 #include "algif/algif.h"
 
 #include "TGXLoader.h"
@@ -64,8 +62,11 @@ bool view::load_image(std::string location) {
   }
   // Png
   else if (imageType == TYPE_JPG) {
-    tempBitmap = load_jpg(location.c_str(), NULL);
-    errorMessage = lastError;
+    JpegLoader *jLoad = new JpegLoader();
+    jLoad -> Load(location.c_str());
+
+    tempBitmap = jLoad -> GetBitmap();
+    //errorMessage = lastError;
   }
   // Gif
   else if (imageType == TYPE_GIF) {

@@ -1,37 +1,39 @@
 #ifndef JPEGLOADER_H
 #define JPEGLOADER_H
 
-#include <stdlib.h>
-#include <stdio.h>
-
-#if defined(__MINGW32__)
-  #undef __MINGW32__
-  #include <jpeglib.h>
-  #define __MINGW32__
-#else
-  #include <jpeglib.h>
-#endif
-
-#include <jerror.h>
-#include <setjmp.h>
-
 #include <allegro.h>
+#include "ImageLoader.h"
 
+extern "C" {
+  #if defined(__MINGW32__)
+    #undef __MINGW32__
+    #include <jpeglib.h>
+    #define __MINGW32__
+  #else
+    #include <jpeglib.h>
+  #endif
 
-typedef struct my_src_mgr my_src_mgr;
-struct my_src_mgr {
-  struct jpeg_source_mgr pub;
-  JOCTET eoi_buffer[2];
+  #include <jerror.h>
+  #include <setjmp.h>
+}
+
+class JpegLoader: public ImageLoader {
+  public:
+    virtual int Load(const char* filename) override;
+
+  private:
+    virtual int LoadBitmap() override;
+
+    uint8_t nNumComponent;
+
+    struct ErrorManager {
+      jpeg_error_mgr defaultErrorManager;
+      jmp_buf jumpBuffer;
+    };
+
+    static void ErrorExit(j_common_ptr cinfo);
+    static void OutputMessage(j_common_ptr cinfo);
+
 };
-
-typedef struct my_error_mgr *my_error_ptr;
-struct my_error_mgr {
-  struct jpeg_error_mgr pub;
-  jmp_buf setjmp_buffer;
-};
-
-char lastError[JMSG_LENGTH_MAX];
-
-BITMAP* load_jpg(char const *filename, PALETTE pal);
 
 #endif // JPEGLOADER_H
