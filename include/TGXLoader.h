@@ -1,41 +1,18 @@
 /*
- * TGXLoader
- * Loads tgx image from file
+ * Tgx Loader
  * Allan Legemaate
- * 12/12/2018
+ * 22/05/2019
+ * Loads TGX
  */
 
 #ifndef TGXLOADER_H
 #define TGXLOADER_H
 
-#include <allegro.h>
-#include <string>
-#include <vector>
+#include "ImageLoader.h"
 
-class TGXLoader {
+class TgxLoader: public ImageLoader {
   public:
-    // Ctor
-    TGXLoader() {};
-
-    // Dtor
-    virtual ~TGXLoader() {};
-
-    // Load tgx from file
-    static BITMAP* load_tgx(char const *filename, PALETTE pal);
-
-    // Tgx helper used by file and memory
-    static BITMAP* load_tgx_helper(std::vector<char> *bytes, unsigned int *iter, unsigned int width, unsigned int height, std::vector<unsigned int>* pall = nullptr);
-
-    // Convert 15 bit to 24 colour
-    static int convert_color(unsigned char byte1, unsigned char byte2);
-
-  private:
-    // Token to string converter
-    static std::string token_name(int token);
-
-    // Look up colour from pallete
-    static int pallete_lookup(unsigned char addr, std::vector<unsigned int>* pall);
-
+    virtual int Load(const char* filename) override;
 };
 
 #endif // TGXLOADER_H

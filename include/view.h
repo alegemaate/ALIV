@@ -14,35 +14,19 @@
 
 #include "ImageLoader.h"
 #include "image_data.h"
-#include "state.h"
 #include "keyListener.h"
 
-#define WINDOW_W SCREEN_W
-#define WINDOW_H SCREEN_H
-
-enum {
-  TYPE_INV,
-  TYPE_PNG,
-  TYPE_BMP,
-  TYPE_PCX,
-  TYPE_JPG,
-  TYPE_GIF,
-  TYPE_TGA,
-  TYPE_TGX,
-  TYPE_GM1
-};
-
-class view : public state{
+class view {
   public:
     // Construct/deconstruct
     view();
-    virtual ~view() {};
+    ~view() {};
 
     // Override parent
-    virtual void update() override;
+    void update();
 
     // Draw view
-    virtual void draw() override;
+    void draw();
 
     // Load image from file
     bool LoadImage(const char* location);

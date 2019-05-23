@@ -1,56 +1,30 @@
 /*
- * GM1Loader
- * Loads gm1 animation from file
+ * Gm1 Loader
  * Allan Legemaate
- * 12/12/2018
+ * 22/05/2019
+ * Loads GM1
  */
 
 #ifndef GM1LOADER_H
 #define GM1LOADER_H
 
-#include <allegro.h>
-#include <string>
+#include "ImageLoader.h"
+
+#include <chrono>
 #include <vector>
 
-struct GM1Data {
-  unsigned int index;
-  unsigned int size;
-  unsigned int width;
-  unsigned int height;
-  unsigned int offset;
-  BITMAP *image;
-};
-
-class GM1Loader {
+class Gm1Loader: public ImageLoader {
   public:
-    // Ctor
-    GM1Loader() {};
+    Gm1Loader();
+    ~Gm1Loader();
 
-    // Dtor
-    virtual ~GM1Loader() {};
-
-    // Load tgx from file
-    static std::vector<BITMAP*> load_gm1(char const *filename, PALETTE pal);
-
+    virtual int Load(const char* filename) override;
+    virtual BITMAP* GetBitmap() override;
   private:
-    // Token to string converter
-    static std::string data_type_name(int data_type);
+    std::vector<BITMAP*> frames;
+    int frame;
 
-    // Convert 4 chars to int32
-    static unsigned int chars_to_int(char a, char b, char c, char d);
-
-    // Load animation
-    static BITMAP* load_gm1_animation(std::vector<char> *bytes, unsigned int *iter, GM1Data *image_data, std::vector<unsigned int> *pall);
-
-    // Load tile
-    static BITMAP* load_gm1_tile(std::vector<char> *bytes, unsigned int *iter, GM1Data *image_data);
-
-    // Load font
-    static BITMAP* load_gm1_tgx(std::vector<char> *bytes, unsigned int *iter, GM1Data *image_data);
-
-    // Load uncompressed
-    static BITMAP* load_gm1_uncompressed(std::vector<char> *bytes, unsigned int *iter, GM1Data *image_data);
-
+    std::chrono::time_point<std::chrono::steady_clock> lastTick;
 };
 
 #endif // GM1LOADER_H

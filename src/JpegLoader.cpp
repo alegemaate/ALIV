@@ -10,6 +10,7 @@ int JpegLoader::Load(const char* filename) {
   ErrorManager errorManager;
 
   // Load file
+  sLocation = filename;
   FILE *pFile = fopen(filename, "rb");
   if (!pFile)
     return 1;

@@ -65,26 +65,6 @@ bool view::LoadImage(const char* location) {
     return true;
   }
 
-
-  // SHC Tgx format
-  /*else if (imageType == TYPE_TGX) {
-    tempBitmap = TGXLoader::load_tgx(location, NULL);
-  }
-  // SHC GM1 format
-  else if (imageType == TYPE_GM1) {
-    std::vector<BITMAP*> return_bitmaps = GM1Loader::load_gm1(location, NULL);
-
-    // Load all animation images
-    for (unsigned int i = 0; i < return_bitmaps.size(); i++) {
-      images.push_back(image_data(return_bitmaps.at(i), location, errorMessage));
-    }
-    // Ready cursor
-    select_mouse_cursor(MOUSE_CURSOR_ARROW);
-    show_mouse(screen);
-
-    return true;
-  }*/
-
   return false;
 }
 
@@ -98,14 +78,14 @@ void view::update() {
     if (mouse_z - old_scroll < 0 && image_zoom > 0.01) {
       image_zoom /= 2;
       // Offset x and y
-      x -= float(mouse_x - (WINDOW_W/2 - x)) / 2;
-      y -= float(mouse_y - (WINDOW_H/2 - y)) / 2;
+      x -= float(mouse_x - (SCREEN_W/2 - x)) / 2;
+      y -= float(mouse_y - (SCREEN_H/2 - y)) / 2;
     }
     else if (image_zoom < 100) {
       image_zoom *= 2;
       // Offset x and y
-      x += float(mouse_x - (WINDOW_W/2 - x));
-      y += float(mouse_y - (WINDOW_H/2 - y));
+      x += float(mouse_x - (SCREEN_W/2 - x));
+      y += float(mouse_y - (SCREEN_H/2 - y));
     }
     old_scroll = mouse_z;
   }
@@ -130,29 +110,29 @@ void view::update() {
     // Different corners
     if (images.at(image_index) -> GetHWRatio() < 1.0f) {
       // X
-      if (x < WINDOW_W/2 * (1 - image_zoom))
-        x = WINDOW_W/2 * (1 - image_zoom);
-      else if (x > WINDOW_W/2 * (1 + image_zoom) - WINDOW_W)
-        x = WINDOW_W/2 * (1 + image_zoom) - WINDOW_W;
+      if (x < SCREEN_W/2 * (1 - image_zoom))
+        x = SCREEN_W/2 * (1 - image_zoom);
+      else if (x > SCREEN_W/2 * (1 + image_zoom) - SCREEN_W)
+        x = SCREEN_W/2 * (1 + image_zoom) - SCREEN_W;
 
       // Y
-      if (y < WINDOW_H/2 * (1 - images.at(image_index) -> GetHWRatio() * image_zoom))
-        y = WINDOW_H/2 * (1 - images.at(image_index) -> GetHWRatio() * image_zoom);
-      else if (y > WINDOW_H/2 * (1 + image_zoom * images.at(image_index) -> GetHWRatio()) - WINDOW_H)
-        y = WINDOW_H/2 * (1 + image_zoom * images.at(image_index) -> GetHWRatio()) - WINDOW_H;
+      if (y < SCREEN_H/2 * (1 - images.at(image_index) -> GetHWRatio() * image_zoom))
+        y = SCREEN_H/2 * (1 - images.at(image_index) -> GetHWRatio() * image_zoom);
+      else if (y > SCREEN_H/2 * (1 + image_zoom * images.at(image_index) -> GetHWRatio()) - SCREEN_H)
+        y = SCREEN_H/2 * (1 + image_zoom * images.at(image_index) -> GetHWRatio()) - SCREEN_H;
     }
     else{
       // X
-      if (x < WINDOW_W/2 * (1 - images.at(image_index) -> GetWHRatio() * image_zoom))
-        x = WINDOW_W/2 * (1 - images.at(image_index) -> GetWHRatio() * image_zoom);
-      else if (x > WINDOW_W/2 * (1 + images.at(image_index) -> GetWHRatio() * image_zoom) - WINDOW_W)
-        x = WINDOW_W/2 * (1 + images.at(image_index) -> GetWHRatio() * image_zoom) - WINDOW_W;
+      if (x < SCREEN_W/2 * (1 - images.at(image_index) -> GetWHRatio() * image_zoom))
+        x = SCREEN_W/2 * (1 - images.at(image_index) -> GetWHRatio() * image_zoom);
+      else if (x > SCREEN_W/2 * (1 + images.at(image_index) -> GetWHRatio() * image_zoom) - SCREEN_W)
+        x = SCREEN_W/2 * (1 + images.at(image_index) -> GetWHRatio() * image_zoom) - SCREEN_W;
 
       // Y
-      if (y < WINDOW_H/2 * (1 - image_zoom))
-        y = WINDOW_H/2 * (1 - image_zoom);
-      else if (y > WINDOW_H/2 * (1 + image_zoom) - WINDOW_H)
-        y = WINDOW_H/2 * (1 + image_zoom) - WINDOW_H;
+      if (y < SCREEN_H/2 * (1 - image_zoom))
+        y = SCREEN_H/2 * (1 - image_zoom);
+      else if (y > SCREEN_H/2 * (1 + image_zoom) - SCREEN_H)
+        y = SCREEN_H/2 * (1 + image_zoom) - SCREEN_H;
     }
   }
 
@@ -199,33 +179,33 @@ void view::draw(){
   if (images.size() > (unsigned)image_index){
     // Unloadable image
     if (images.at(image_index) -> GetBitmap() == nullptr) {
-      textprintf_centre_ex(buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, "Oh Noes! Could not load image..."/*images.at(image_index).errorMessage.c_str()*/);
+      textprintf_centre_ex(buffer, font, SCREEN_W/2, SCREEN_H/2, 0xFFFFFF, -1, "Oh Noes! Could not load image..."/*images.at(image_index).errorMessage.c_str()*/);
     }
     else if (images.at(image_index) -> GetHWRatio() < 1.0f) {
       stretch_sprite(buffer, images.at(image_index) -> GetBitmap(),
-                     WINDOW_W/2 * (1 - image_zoom) - x,
-                     WINDOW_H/2 * (1 - images.at(image_index) -> GetHWRatio() * image_zoom) - y,
-                     WINDOW_W * image_zoom,
-                     WINDOW_H * image_zoom * images.at(image_index) -> GetHWRatio());
+                     SCREEN_W/2 * (1 - image_zoom) - x,
+                     SCREEN_H/2 * (1 - images.at(image_index) -> GetHWRatio() * image_zoom) - y,
+                     SCREEN_W * image_zoom,
+                     SCREEN_H * image_zoom * images.at(image_index) -> GetHWRatio());
     }
     else {
       stretch_sprite(buffer, images.at(image_index) -> GetBitmap(),
-                     WINDOW_W/2 * (1 - images.at(image_index) -> GetWHRatio() * image_zoom) - x,
-                     WINDOW_H/2 * (1 - image_zoom) - y,
-                     WINDOW_W * image_zoom * images.at(image_index) -> GetWHRatio(),
-                     WINDOW_H * image_zoom);
+                     SCREEN_W/2 * (1 - images.at(image_index) -> GetWHRatio() * image_zoom) - x,
+                     SCREEN_H/2 * (1 - image_zoom) - y,
+                     SCREEN_W * image_zoom * images.at(image_index) -> GetWHRatio(),
+                     SCREEN_H * image_zoom);
     }
   }
   // No images
   else {
-    textprintf_centre_ex(buffer, font, WINDOW_W/2, WINDOW_H/2, 0xFFFFFF, -1, "No image!");
+    textprintf_centre_ex(buffer, font, SCREEN_W/2, SCREEN_H/2, 0xFFFFFF, -1, "No image!");
   }
 
   // Image index
   textprintf_ex(buffer, font, 4, 4, 0xFFFFFF, -1, "image: %i/%i", image_index + (images.size() > 0 ? 1 : 0), images.size());
 
   //textprintf_ex( buffer, font, 0, 0, 0xFFFFFF, -1, "%i, %i", x, y);
-  //textprintf_ex( buffer, font, 0, 20, 0xFFFFFF, -1, "%i, %i", WINDOW_W/2 - x, WINDOW_H/2 - y);
+  //textprintf_ex( buffer, font, 0, 20, 0xFFFFFF, -1, "%i, %i", SCREEN_W/2 - x, SCREEN_H/2 - y);
   //textprintf_ex( buffer, font, 0, 40, 0xFFFFFF, -1, "%f", image_zoom);
 
   // Draw buffer to screen
@@ -264,13 +244,13 @@ ImageLoader* view::GetLoader(const char* path) {
     return new TgaLoader();
   }
   // TGX
-  /*else if (type == "tgx") {
-    return TYPE_TGX;
+  else if (type == "tgx") {
+    return new TgxLoader();
   }
   // GM1
   else if (type == "gm1") {
-    return TYPE_GM1;
-  }*/
+    return new Gm1Loader();
+  }
 
   // File type not supported
   return nullptr;
