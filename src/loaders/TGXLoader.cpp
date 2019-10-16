@@ -1,6 +1,5 @@
-#include "TgxLoader.h"
-
-#include "TGXParser.h"
+#include "loaders/TgxLoader.h"
+#include "parsers/TGXParser.h"
 
 int TgxLoader::Load(const char* filename) {
   sLocation = filename;

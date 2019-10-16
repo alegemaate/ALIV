@@ -1,4 +1,4 @@
-#include "BmpLoader.h"
+#include "loaders/BmpLoader.h"
 
 int BmpLoader::Load(const char* filename) {
   sLocation = filename;

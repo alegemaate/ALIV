@@ -1,4 +1,4 @@
-#include "ImageLoader.h"
+#include "loaders/ImageLoader.h"
 
 ImageLoader::ImageLoader() {
   nWidth = 0;

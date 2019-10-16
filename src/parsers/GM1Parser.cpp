@@ -1,9 +1,9 @@
-#include "GM1Parser.h"
+#include "parsers/GM1Parser.h"
 
 #include <iostream>
 #include <fstream>
 
-#include "TGXParser.h"
+#include "parsers/TGXParser.h"
 
 // Convert GM1 token to name
 std::string GM1Parser::data_type_name(int data_type) {

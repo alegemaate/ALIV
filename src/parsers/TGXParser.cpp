@@ -1,4 +1,4 @@
-#include "TGXParser.h"
+#include "parsers/TGXParser.h"
 
 #include <fstream>
 #include <iostream>

@@ -1,6 +1,6 @@
-#include "Gm1Loader.h"
+#include "loaders/Gm1Loader.h"
 
-#include "GM1Parser.h"
+#include "parsers/GM1Parser.h"
 
 Gm1Loader::Gm1Loader() {
   frame = 0;

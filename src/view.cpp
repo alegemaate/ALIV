@@ -4,14 +4,14 @@
 #include <math.h>
 #include <algorithm>
 
-#include "JpegLoader.h"
-#include "PngLoader.h"
-#include "PcxLoader.h"
-#include "TgaLoader.h"
-#include "BmpLoader.h"
-#include "GifLoader.h"
-#include "TGXLoader.h"
-#include "GM1Loader.h"
+#include "loaders/JpegLoader.h"
+#include "loaders/PngLoader.h"
+#include "loaders/PcxLoader.h"
+#include "loaders/TgaLoader.h"
+#include "loaders/BmpLoader.h"
+#include "loaders/GifLoader.h"
+#include "loaders/TGXLoader.h"
+#include "loaders/GM1Loader.h"
 
 // Constrct
 view::view() {

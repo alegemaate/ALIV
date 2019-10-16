@@ -1,6 +1,6 @@
-#include "PcxLoader.h"
+#include "loaders/TgaLoader.h"
 
-int PcxLoader::Load(const char* filename) {
+int TgaLoader::Load(const char* filename) {
   sLocation = filename;
   pImage = load_bitmap(filename, NULL);
   SetDimensions();

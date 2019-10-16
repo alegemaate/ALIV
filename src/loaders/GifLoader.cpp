@@ -1,4 +1,4 @@
-#include "GifLoader.h"
+#include "loaders/GifLoader.h"
 
 #include "algif/algif.h"
 

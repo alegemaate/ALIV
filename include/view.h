@@ -12,8 +12,8 @@
 #include <vector>
 #include <string>
 
-#include "ImageLoader.h"
-#include "keyListener.h"
+#include "loaders/ImageLoader.h"
+#include "util/keyListener.h"
 
 class view {
   public:

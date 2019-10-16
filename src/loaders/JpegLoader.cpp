@@ -1,4 +1,4 @@
-#include "JpegLoader.h"
+#include "loaders/JpegLoader.h"
 
 #include <stdlib.h>
 #include <stdio.h>
