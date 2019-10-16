@@ -17,14 +17,14 @@ class ImageLoader {
 
     virtual int Load(const char* filename) = 0;
 
-    uint32_t GetWidth();
-    uint32_t GetHeight();
-    uint8_t* GetRawData();
+    uint32_t GetWidth() const;
+    uint32_t GetHeight() const;
+    uint8_t* GetRawData() const;
 
     virtual BITMAP* GetBitmap();
-    const char* GetLocation();
-    float GetHWRatio();
-    float GetWHRatio();
+    const char* GetLocation() const;
+    float GetHWRatio() const;
+    float GetWHRatio() const;
 
   protected:
     void SetDimensions();
@@ -34,9 +34,6 @@ class ImageLoader {
     uint8_t* pData;
     BITMAP* pImage;
     const char* sLocation;
-
-    float nWHRatio;
-    float nHWRatio;
 };
 
 #endif // IMAGELOADER_H

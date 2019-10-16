@@ -2,12 +2,9 @@
 
 #include "algif/algif.h"
 
-GifLoader::GifLoader() {
-  frames = nullptr;
-  durations = nullptr;
-  numFrames = 0;
-  frame = 0;
-  lastTick = std::chrono::steady_clock::now();
+GifLoader::GifLoader()
+  : frames(nullptr), durations(nullptr), numFrames(0), frame(-1), lastTick(std::chrono::steady_clock::now()) {
+
 }
 
 

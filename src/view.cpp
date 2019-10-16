@@ -45,17 +45,17 @@ view::view() {
 }
 
 // Load image from path
-bool view::LoadImage(const char* location) {
+bool view::LoadImage(const char* path) {
   // Busy cursor
   select_mouse_cursor(MOUSE_CURSOR_BUSY);
   show_mouse(screen);
 
   // Get loader
-  ImageLoader *loader = GetLoader(location);
+  ImageLoader *loader = GetLoader(path);
 
   // Load
   if(loader) {
-    loader -> Load(location);
+    loader -> Load(path);
     images.push_back(loader);
 
     select_mouse_cursor(MOUSE_CURSOR_ARROW);

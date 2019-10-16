@@ -64,4 +64,4 @@ int main(int argc, char *argv[]) {
   // End
   return 0;
 }
-END_OF_MAIN();
+END_OF_MAIN()

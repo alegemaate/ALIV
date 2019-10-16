@@ -13,12 +13,12 @@
 #include <vector>
 
 struct GM1Data {
-  unsigned int index;
-  unsigned int size;
-  unsigned int width;
-  unsigned int height;
-  unsigned int offset;
-  BITMAP *image;
+  unsigned int index = -1;
+  unsigned int size = 0;
+  unsigned int width = 0;
+  unsigned int height = 0;
+  unsigned int offset = 0;
+  BITMAP *image = nullptr;
 };
 
 class GM1Parser {
@@ -30,7 +30,7 @@ class GM1Parser {
     virtual ~GM1Parser() {};
 
     // Load tgx from file
-    static std::vector<BITMAP*> load_gm1(char const *filename, PALETTE pal);
+    static std::vector<BITMAP*> load_gm1(char const *filename);
 
   private:
     // Token to string converter

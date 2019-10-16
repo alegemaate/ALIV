@@ -21,10 +21,10 @@ class Gm1Loader: public ImageLoader {
     virtual int Load(const char* filename) override;
     virtual BITMAP* GetBitmap() override;
   private:
-    std::vector<BITMAP*> frames;
     int frame;
-
     std::chrono::time_point<std::chrono::steady_clock> lastTick;
+
+    std::vector<BITMAP*> frames;
 };
 
 #endif // GM1LOADER_H

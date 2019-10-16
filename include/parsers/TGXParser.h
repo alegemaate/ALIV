@@ -21,7 +21,7 @@ class TGXParser {
     virtual ~TGXParser() {};
 
     // Load tgx from file
-    static BITMAP* load_tgx(char const *filename, PALETTE pal);
+    static BITMAP* load_tgx(char const *filename);
 
     // Tgx helper used by file and memory
     static BITMAP* load_tgx_helper(std::vector<char> *bytes, unsigned int *iter, unsigned int width, unsigned int height, std::vector<unsigned int>* pall = nullptr);

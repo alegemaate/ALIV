@@ -5,32 +5,6 @@
 
 #include "parsers/TGXParser.h"
 
-// Convert GM1 token to name
-std::string GM1Parser::data_type_name(int data_type) {
-  switch(data_type) {
-    case 1:
-      return "interface items";
-
-    case 2:
-      return "animations";
-
-    case 3:
-      return "buildings";
-
-    case 4:
-      return "font";
-
-    case 6:
-      return "unknown animation";
-
-    case 5:
-    case 7:
-      return "walls, grass, stone and others";
-  }
-
-  return "Invalid type (" + std::to_string(data_type) + ")";
-}
-
 // Convert 4 chars to int32
 unsigned int GM1Parser::chars_to_int(char a, char b, char c, char d) {
   return (unsigned char)a | ((unsigned char)b << 8) | ((unsigned char)c << 16) | ((unsigned char)d << 24);
@@ -116,7 +90,7 @@ BITMAP* GM1Parser::load_gm1_uncompressed(std::vector<char> *bytes, unsigned int 
 }
 
 // Load gm1 from file
-std::vector<BITMAP*> GM1Parser::load_gm1(char const *filename, PALETTE pal) {
+std::vector<BITMAP*> GM1Parser::load_gm1(char const *filename) {
   // Create file
   std::ifstream f(filename, std::ios::binary | std::ios::ate);
   std::ifstream::pos_type pos = f.tellg();
@@ -156,9 +130,9 @@ std::vector<BITMAP*> GM1Parser::load_gm1(char const *filename, PALETTE pal) {
   i = 5120 + 88;
 
   // Create empty image data
-  for(unsigned int i = 0; i < num_pictures; i++) {
+  for(unsigned int t = 0; t < num_pictures; t++) {
     GM1Data newData;
-    newData.index = i;
+    newData.index = t;
     image_data.push_back(newData);
   }
 

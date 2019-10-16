@@ -6,8 +6,6 @@ ImageLoader::ImageLoader() {
   pData = nullptr;
   pImage = nullptr;
   sLocation = "No Path!";
-  nWHRatio = 0;
-  nHWRatio = 0;
 }
 
 ImageLoader::~ImageLoader() {
@@ -18,15 +16,15 @@ ImageLoader::~ImageLoader() {
     destroy_bitmap(pImage);
 }
 
-uint32_t ImageLoader::GetWidth() {
+uint32_t ImageLoader::GetWidth() const {
   return nWidth;
 }
 
-uint32_t ImageLoader::GetHeight() {
+uint32_t ImageLoader::GetHeight() const {
   return nHeight;
 }
 
-uint8_t* ImageLoader::GetRawData() {
+uint8_t* ImageLoader::GetRawData() const {
   return pData;
 }
 
@@ -34,23 +32,21 @@ BITMAP* ImageLoader::GetBitmap() {
   return pImage;
 }
 
-const char* ImageLoader::GetLocation() {
+const char* ImageLoader::GetLocation() const {
   return sLocation;
 }
 
-float ImageLoader::GetHWRatio() {
-  return nHWRatio;
+float ImageLoader::GetHWRatio() const {
+  return (float)nHeight / (float)nWidth;
 }
 
-float ImageLoader::GetWHRatio() {
-  return nWHRatio;
+float ImageLoader::GetWHRatio() const {
+  return (float)nWidth / (float)nHeight;
 }
 
 void ImageLoader::SetDimensions() {
   if(pImage) {
     nWidth = pImage -> w;
     nHeight = pImage -> h;
-    nWHRatio = (float)nWidth / (float)nHeight;
-    nHWRatio = (float)nHeight / (float)nWidth;
   }
 }

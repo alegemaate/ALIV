@@ -2,9 +2,9 @@
 
 #include "parsers/GM1Parser.h"
 
-Gm1Loader::Gm1Loader() {
-  frame = 0;
-  lastTick = std::chrono::steady_clock::now();
+Gm1Loader::Gm1Loader()
+  : frame(0), lastTick(std::chrono::steady_clock::now()) {
+
 }
 
 
@@ -14,7 +14,7 @@ Gm1Loader::~Gm1Loader() {
 
 int Gm1Loader::Load(const char* filename) {
   sLocation = filename;
-  frames = GM1Parser::load_gm1(filename, NULL);
+  frames = GM1Parser::load_gm1(filename);
 
   if(frames.at(0)) {
     pImage = frames.at(0);

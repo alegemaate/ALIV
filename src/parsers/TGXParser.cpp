@@ -3,25 +3,6 @@
 #include <fstream>
 #include <iostream>
 
-// Convert tgx token to name
-std::string TGXParser::token_name(int token) {
-  switch(token) {
-    case 0:
-      return "Stream of pixels";
-
-    case 1:
-      return "Transparent pixels";
-
-    case 2:
-      return "Repeating pixels";
-
-    case 4:
-      return "New line";
-  }
-
-  return "Invalid token";
-}
-
 // Convert 15 bit colour to 24 bit
 int TGXParser::convert_color(unsigned char byte1, unsigned char byte2) {
   // Extract values
@@ -82,7 +63,7 @@ BITMAP* TGXParser::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter,
             putpixel(bmp, x, y, convert_color((unsigned char)bytes -> at(*iter), (unsigned char)bytes -> at(*iter + 1)));
             *iter += 2;
           }
-          // Pallette lookup
+          // Palette lookup
           else {
             putpixel(bmp, x, y, pallete_lookup((unsigned char)bytes -> at(*iter), pall));
             *iter += 1;
@@ -151,7 +132,7 @@ BITMAP* TGXParser::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter,
 }
 
 // Load tgx from file
-BITMAP* TGXParser::load_tgx(char const *filename, PALETTE pal) {
+BITMAP* TGXParser::load_tgx(char const *filename) {
   // Create file
   std::ifstream f(filename, std::ios::binary | std::ios::ate);
   std::ifstream::pos_type pos = f.tellg();

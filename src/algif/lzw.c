@@ -94,7 +94,7 @@ LZW_decode(PACKFILE * file, BITMAP *bmp)
   }
   codes[4096];                /* Maximum bit size is 12. */
   int n;
-  int i, prev, code, c;
+  int i, prev, c;
   int out_pos = 0;
 
   orig_bit_size = pack_getc(file);
@@ -121,7 +121,7 @@ LZW_decode(PACKFILE * file, BITMAP *bmp)
 
   do
   {
-    code = read_code(file, buf, &bit_pos, bit_size);
+    int code = read_code(file, buf, &bit_pos, bit_size);
 
     if(code == -1)
       return -1;
@@ -238,7 +238,7 @@ LZW_encode(PACKFILE * file, BITMAP *bmp)
     int len;
   }
   codes[4096];                /* Maximum bit size is 12. */
-  int code, prev;
+  int prev;
   int in_pos;
   int n, i;
 
@@ -268,7 +268,7 @@ LZW_encode(PACKFILE * file, BITMAP *bmp)
 
   for(in_pos = 1; in_pos < bmp->w * bmp->h; in_pos++)
   {
-    code = read_pixel(bmp, in_pos);
+    int code = read_pixel(bmp, in_pos);
 
     if(prev != clear_marker)
     {

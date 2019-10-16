@@ -28,12 +28,12 @@ class view {
     void draw();
 
     // Load image from file
-    bool LoadImage(const char* location);
+    bool LoadImage(const char* path);
   protected:
 
   private:
     // Gets loader for file
-    ImageLoader* GetLoader(const char* location);
+    ImageLoader* GetLoader(const char* path);
 
     // Listens to keys for down and up
     keyListener the_listener;
