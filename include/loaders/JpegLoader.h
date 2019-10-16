@@ -13,15 +13,15 @@
 
 extern "C" {
   #if defined(__MINGW32__)
-    #undef __MINGW32__
-    #include <jpeglib.h>
-    #define __MINGW32__
+#undef __MINGW32__
+#include <jpeglib.h>
+#define __MINGW32__
   #else
-    #include <jpeglib.h>
+#include <jpeglib.h>
   #endif
 
-  #include <jerror.h>
-  #include <setjmp.h>
+#include <jerror.h>
+#include <setjmp.h>
 }
 
 class JpegLoader: public ImageLoader {

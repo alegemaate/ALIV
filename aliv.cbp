@@ -27,38 +27,25 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="include/BmpLoader.h" />
-		<Unit filename="include/GM1Parser.h" />
-		<Unit filename="include/GifLoader.h" />
-		<Unit filename="include/Gm1Loader.h" />
-		<Unit filename="include/ImageLoader.h" />
-		<Unit filename="include/JpegLoader.h">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="include/PcxLoader.h" />
-		<Unit filename="include/PngLoader.h" />
-		<Unit filename="include/TGXParser.h" />
-		<Unit filename="include/TgaLoader.h" />
-		<Unit filename="include/TgxLoader.h" />
 		<Unit filename="include/algif/algif.h" />
 		<Unit filename="include/algif/gif.h" />
 		<Unit filename="include/algif/lzw.h" />
-		<Unit filename="include/keyListener.h" />
+		<Unit filename="include/loaders/BmpLoader.h" />
+		<Unit filename="include/loaders/GM1Loader.h" />
+		<Unit filename="include/loaders/GifLoader.h" />
+		<Unit filename="include/loaders/ImageLoader.h" />
+		<Unit filename="include/loaders/JpegLoader.h" />
+		<Unit filename="include/loaders/PcxLoader.h" />
+		<Unit filename="include/loaders/PngLoader.h" />
+		<Unit filename="include/loaders/TGXLoader.h" />
+		<Unit filename="include/loaders/TgaLoader.h" />
+		<Unit filename="include/parsers/GM1Parser.h" />
+		<Unit filename="include/parsers/TGXParser.h" />
+		<Unit filename="include/util/keyListener.h" />
 		<Unit filename="include/view.h" />
 		<Unit filename="res/resources.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="src/BmpLoader.cpp" />
-		<Unit filename="src/GM1Parser.cpp" />
-		<Unit filename="src/GifLoader.cpp" />
-		<Unit filename="src/Gm1Loader.cpp" />
-		<Unit filename="src/ImageLoader.cpp" />
-		<Unit filename="src/JpegLoader.cpp" />
-		<Unit filename="src/PcxLoader.cpp" />
-		<Unit filename="src/PngLoader.cpp" />
-		<Unit filename="src/TGXParser.cpp" />
-		<Unit filename="src/TgaLoader.cpp" />
-		<Unit filename="src/TgxLoader.cpp" />
 		<Unit filename="src/algif/algif.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -68,8 +55,19 @@
 		<Unit filename="src/algif/lzw.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/keyListener.cpp" />
+		<Unit filename="src/loaders/BmpLoader.cpp" />
+		<Unit filename="src/loaders/GM1Loader.cpp" />
+		<Unit filename="src/loaders/GifLoader.cpp" />
+		<Unit filename="src/loaders/ImageLoader.cpp" />
+		<Unit filename="src/loaders/JpegLoader.cpp" />
+		<Unit filename="src/loaders/PcxLoader.cpp" />
+		<Unit filename="src/loaders/PngLoader.cpp" />
+		<Unit filename="src/loaders/TGXLoader.cpp" />
+		<Unit filename="src/loaders/TgaLoader.cpp" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/parsers/GM1Parser.cpp" />
+		<Unit filename="src/parsers/TGXParser.cpp" />
+		<Unit filename="src/util/keyListener.cpp" />
 		<Unit filename="src/view.cpp" />
 		<Extensions>
 			<code_completion />

@@ -16,7 +16,7 @@ int Gm1Loader::Load(const char* filename) {
   sLocation = filename;
   frames = GM1Parser::load_gm1(filename, NULL);
 
-  if (frames.at(0)) {
+  if(frames.at(0)) {
     pImage = frames.at(0);
     SetDimensions();
   }
@@ -27,7 +27,7 @@ int Gm1Loader::Load(const char* filename) {
 BITMAP* Gm1Loader::GetBitmap() {
   std::chrono::time_point<std::chrono::steady_clock> now = std::chrono::steady_clock::now();
 
-  if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastTick).count() > 50) {
+  if(std::chrono::duration_cast<std::chrono::milliseconds>(now - lastTick).count() > 50) {
     lastTick = now;
     frame = (frame + 1) % frames.size();
     pImage = frames.at(frame);

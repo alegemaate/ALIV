@@ -5,16 +5,20 @@
 
 // Convert tgx token to name
 std::string TGXParser::token_name(int token) {
-  switch (token) {
+  switch(token) {
     case 0:
       return "Stream of pixels";
+
     case 1:
       return "Transparent pixels";
+
     case 2:
       return "Repeating pixels";
+
     case 4:
       return "New line";
   }
+
   return "Invalid token";
 }
 
@@ -39,26 +43,27 @@ int TGXParser::convert_color(unsigned char byte1, unsigned char byte2) {
 
 // Look up address from pallette
 int TGXParser::pallete_lookup(unsigned char addr, std::vector<unsigned int>* pall) {
-  if (addr < pall -> size()) {
+  if(addr < pall -> size()) {
     return pall -> at(addr);
   }
+
   return makecol(255, 0, 0);
 }
 
 // Tgx helper used by file and memory
 BITMAP* TGXParser::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter, unsigned int width, unsigned int height, std::vector<unsigned int>* pall) {
   // Make bitmap
-  BITMAP *bmp = create_bitmap( width, height);
+  BITMAP *bmp = create_bitmap(width, height);
   clear_to_color(bmp, makecol(255, 255, 255));
 
-	// File iterator and image x and y
-	unsigned int x = 0;
-	unsigned int y = 0;
+  // File iterator and image x and y
+  unsigned int x = 0;
+  unsigned int y = 0;
 
-	// Parse file
-	while (*iter < bytes -> size()) {
+  // Parse file
+  while(*iter < bytes -> size()) {
     // Close
-    if (y >= height)
+    if(y >= height)
       break;
 
     // Extract token and length
@@ -66,13 +71,14 @@ BITMAP* TGXParser::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter,
     int length = ((unsigned char)bytes -> at(*iter) & 0b00011111) + 1;
 
     // Deal with tokens accordingly
-    switch (token) {
+    switch(token) {
       // Pixel stream
       case 0:
         *iter += 1;
-        for (unsigned int t = x + length; x < t; x++) {
+
+        for(unsigned int t = x + length; x < t; x++) {
           // 15 bit colour
-          if (pall == nullptr) {
+          if(pall == nullptr) {
             putpixel(bmp, x, y, convert_color((unsigned char)bytes -> at(*iter), (unsigned char)bytes -> at(*iter + 1)));
             *iter += 2;
           }
@@ -82,53 +88,66 @@ BITMAP* TGXParser::load_tgx_helper(std::vector<char> *bytes, unsigned int *iter,
             *iter += 1;
           }
         }
+
         break;
+
       // Transparent pixels
       case 1:
         *iter += 1;
-        for (unsigned int t = x + length; x < t; x++) {
+
+        for(unsigned int t = x + length; x < t; x++) {
           putpixel(bmp, x, y, makecol(255, 0, 255));
         }
+
         break;
+
       // Repeating pixels
       case 2:
         *iter += 1;
+
         // 15 bit colour
-        if (pall == nullptr) {
-          for (unsigned int t = x + length; x < t; x++) {
+        if(pall == nullptr) {
+          for(unsigned int t = x + length; x < t; x++) {
             putpixel(bmp, x, y, convert_color((unsigned char)bytes -> at(*iter), (unsigned char)bytes -> at(*iter + 1)));
           }
+
           *iter += 2;
         }
         // Pallette lookup
         else {
-          for (unsigned int t = x + length; x < t; x++) {
+          for(unsigned int t = x + length; x < t; x++) {
             putpixel(bmp, x, y, pallete_lookup((unsigned char)bytes -> at(*iter), pall));
           }
+
           *iter += 1;
         }
+
         break;
+
       // New line
       case 4:
+
         // Fill rest of line
-        for (; x < width; x++) {
+        for(; x < width; x++) {
           putpixel(bmp, x, y, makecol(255, 0, 255));
         }
+
         // New line
         y += 1;
         x = 0;
         *iter += 1;
         break;
+
       // Should never get here
       default:
         std::cout << "Invalid token (" << token << ") at " << *iter << " length " << length << std::endl;
         *iter += 1;
         break;
     }
-	}
+  }
 
-	// Return bmp
-	return bmp;
+  // Return bmp
+  return bmp;
 }
 
 // Load tgx from file

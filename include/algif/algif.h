@@ -15,7 +15,7 @@ typedef struct GIF_PALETTE GIF_PALETTE;
 
 struct GIF_PALETTE
 {
-    int colors_count;
+ int colors_count;
     RGB colors[256];
 };
 

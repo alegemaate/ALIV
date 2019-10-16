@@ -44,19 +44,19 @@ void setup() {
 }
 
 // Start here
-int main (int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
   // Setup basic functionality
   setup();
 
   // Load images into view
   view* view_state = new view();
 
-  for (int i = 1; i < argc; i++) {
+  for(int i = 1; i < argc; i++) {
     view_state -> LoadImage(argv[i]);
   }
 
   // Run loop
-  while (!key[KEY_ESC] && !close_button_pressed) {
+  while(!key[KEY_ESC] && !close_button_pressed) {
     view_state -> update();
     view_state -> draw();
   }

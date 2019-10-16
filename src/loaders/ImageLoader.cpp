@@ -11,10 +11,10 @@ ImageLoader::ImageLoader() {
 }
 
 ImageLoader::~ImageLoader() {
-  if (pData)
+  if(pData)
     delete pData;
 
-  if (pImage)
+  if(pImage)
     destroy_bitmap(pImage);
 }
 
@@ -47,7 +47,7 @@ float ImageLoader::GetWHRatio() {
 }
 
 void ImageLoader::SetDimensions() {
-  if (pImage) {
+  if(pImage) {
     nWidth = pImage -> w;
     nHeight = pImage -> h;
     nWHRatio = (float)nWidth / (float)nHeight;

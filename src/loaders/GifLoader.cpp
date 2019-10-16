@@ -17,9 +17,9 @@ GifLoader::~GifLoader() {
 
 int GifLoader::Load(const char* filename) {
   sLocation = filename;
-  numFrames = algif_load_animation (filename, &frames, &durations);
+  numFrames = algif_load_animation(filename, &frames, &durations);
 
-  if (frames[0]) {
+  if(frames[0]) {
     pImage = frames[0];
     SetDimensions();
   }
@@ -29,7 +29,8 @@ int GifLoader::Load(const char* filename) {
 
 BITMAP* GifLoader::GetBitmap() {
   std::chrono::time_point<std::chrono::steady_clock> now = std::chrono::steady_clock::now();
-  if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastTick).count() > durations[frame] * 10) {
+
+  if(std::chrono::duration_cast<std::chrono::milliseconds>(now - lastTick).count() > durations[frame] * 10) {
     lastTick = now;
     frame = (frame + 1) % numFrames;
     pImage = frames[frame];
